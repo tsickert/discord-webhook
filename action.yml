@@ -1,6 +1,7 @@
 # action.yml
 name: 'Discord Webhook Action'
 description: 'Use discord webhooks to send basic messages'
+icon: message-square
 inputs:
   webhook-url:
     description: 'Webhook URL from discord. See: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks for details'
