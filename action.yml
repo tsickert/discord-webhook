@@ -13,11 +13,10 @@ inputs:
     required: true
   username: 
     description: 'The username that should appear to send the message. Note: username will have the "bot" badge next to their name.'
-    required: false
-    default: 'Botty McBotFace'
+    required: true
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
-    required: false
+    required: true
 runs:
   using: 'docker'
   image: 'Dockerfile'
