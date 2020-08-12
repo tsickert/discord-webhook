@@ -11,13 +11,11 @@ This will send a message to a discord webhook.
 | username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
 | avatar-url | `true` | URL for the avatar that should appear with the message. |
 
-## Outputs
+## Example Usage
 
-The time we greeted you.
-
-## Example usage
-
+```yaml
 uses: actions/discord-webhook@v1
 with:
     webhook-url: https://discordapp.com/api/webhooks/<webhook_id>/<webhook_token>
     content: Hello, world!
+```

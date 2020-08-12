@@ -18,9 +18,6 @@ inputs:
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
     required: false
-outputs:
-  time:
-    description: 'The time the message was send to the webhook.'
 runs:
   using: 'docker'
   image: 'Dockerfile'
