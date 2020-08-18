@@ -13,10 +13,12 @@ inputs:
     required: true
   username: 
     description: 'The username that should appear to send the message. Note: username will have the "bot" badge next to their name.'
-    required: true
+    required: false
+    default: Botty McBotface
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
-    required: true
+    required: false
+    default: https://cdn.discordapp.com/app-icons/745092739267428372/f86041d764e160752b62eb03390578d1.png?size=256
 runs:
   using: 'docker'
   image: 'Dockerfile'
