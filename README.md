@@ -6,7 +6,7 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 
 | Name | Required | Description |
 |------|----------|-------------|
-| webhook-url | `true`        |  Webhook URL from discord. See: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks for details           |
+| webhook-url | `true`        |  Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details           |
 | content    | `true`       | Message that is send via the webhook.            |
 | username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
 | avatar-url | `false` | URL for the avatar that should appear with the message. |
@@ -39,6 +39,8 @@ jobs:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
 ```
+
+_Disclaimer_: GitHub Actions don't seem to always respect the cron job precisely. My experience has been that crons run about 15 minutes after they're scheduled to and crons that should run per minute will likely only run once every 7-10 minutes. 
 
 ### Manual Trigger
 
