@@ -21,7 +21,3 @@ with:
     username: Botty McBotface
     avatar-url: <some_image_url>
 ```
-
-## Todo
-
-- Make `username` and `avatar-url` optional
