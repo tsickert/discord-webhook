@@ -9,5 +9,6 @@ curl --location --request POST $1 \
 --data-raw '{
     "content": "${2}",
     "username": "${3}",
-    "avatar_url": "${4}"
+    "avatar_url": "${4}",
+    "embeds": "${5}"
 }'
