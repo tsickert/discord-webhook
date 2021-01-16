@@ -17,15 +17,15 @@ inputs:
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
     required: false
-  data-override:
+  raw-data:
     description: 'Name of a json file that will be sent instead as the data for the webhook'
     required: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.webhook-url }}
-    - ${{ inputs.content }}
-    - ${{ inputs.username }}
-    - ${{ inputs.avatar-url }}
-    - ${{ inputs.data-override }}
+    - --url ${{ inputs.webhook-url }}
+    - --content ${{ inputs.content }}
+    - --username ${{ inputs.username }}
+    - --avatar-url ${{ inputs.avatar-url }}
+    - --raw-data ${{ inputs.raw-data }}

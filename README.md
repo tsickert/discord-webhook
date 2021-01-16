@@ -10,6 +10,7 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 | content    | `true`       | Message that is send via the webhook.            |
 | username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
 | avatar-url | `false` | URL for the avatar that should appear with the message. |
+| raw-data | `false` | Filename of raw JSON body to send. **If this is provided, all other non-URL inputs are ignored**. |
 
 ## Usage
 
