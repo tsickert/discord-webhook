@@ -1,6 +1,6 @@
 # action.yml
 name: 'Discord Webhook Action'
-description: 'Send custom messages to discord webhooks. Optionally, add a username and Avatar URL. '
+description: 'Send custom messages to discord webhooks. Optionally, add a username and Avatar URL. Also supports sending JSON file for advanced cases.'
 branding:
   icon: message-square
   color: purple
@@ -9,13 +9,16 @@ inputs:
     description: 'Webhook URL from discord. See: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks for details'
     required: true
   content:  # id of input
-    description: 'Message that is send via the webhook.'
+    description: 'Message that is sent via the webhook.'
     required: true
   username: 
     description: 'The username that should appear to send the message. Note: username will have the "bot" badge next to their name.'
     required: false
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
+    required: false
+  data-override:
+    description: 'Name of a json file that will be sent instead as the data for the webhook'
     required: false
 runs:
   using: 'docker'
@@ -25,3 +28,4 @@ runs:
     - ${{ inputs.content }}
     - ${{ inputs.username }}
     - ${{ inputs.avatar-url }}
+    - ${{ inputs.data-override }}

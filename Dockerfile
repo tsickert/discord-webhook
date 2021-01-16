@@ -1,7 +1,5 @@
-FROM ubuntu
+FROM python:3.7
 
-RUN apt update && apt upgrade -y && apt install -y curl
+ADD main.py main.py
 
-ADD entrypoint.sh entrypoint.sh
-
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "python", "main" ]
