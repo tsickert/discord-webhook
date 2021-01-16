@@ -10,7 +10,6 @@ def call_webhook(args):
     else:
         data = {
             'content': args.content,
-            'embeds': args.embeds,
             'avatar_url': args.avatar_url,
             'username': args.username
         }
