@@ -24,8 +24,13 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - --url ${{ inputs.webhook-url }}
-    - --content ${{ inputs.content }}
-    - --username ${{ inputs.username }}
-    - --avatar-url ${{ inputs.avatar-url }}
-    - --raw-data ${{ inputs.raw-data }}
+    - --url
+    - ${{ inputs.webhook-url }}
+    - --content
+    - ${{ inputs.content }}
+    - --username
+    - ${{ inputs.username }}
+    - --avatar-url
+    - ${{ inputs.avatar-url }}
+    - --raw-data
+    - ${{ inputs.raw-data }}
