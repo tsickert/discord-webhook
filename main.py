@@ -4,7 +4,7 @@ import json
 
 
 def call_webhook(args):
-    if args.raw_data is not None:
+    if args.raw_data is not None or args.raw_data == "":
         data_file = open(args.raw_data)
         data = json.load(data_file)
     else:
