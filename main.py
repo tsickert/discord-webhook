@@ -4,15 +4,19 @@ import json
 
 
 def call_webhook(args):
-    if args.raw_data is not None or args.raw_data == "":
+    if args.raw_data is not None and args.raw_data != "":
         data_file = open(args.raw_data)
         data = json.load(data_file)
     else:
-        data = {
-            'content': args.content,
-            'avatar_url': args.avatar_url,
-            'username': args.username
-        }
+        if args.content is not None and args.content != "":
+            data = {
+                'content': args.content,
+                'avatar_url': args.avatar_url,
+                'username': args.username
+            }
+        else:
+            print('content is not set')
+            return
     response = requests.post(args.url, json=data)
     print(response.text)
 
