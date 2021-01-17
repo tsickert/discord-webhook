@@ -7,4 +7,4 @@ RUN pip install -r /requirements.txt
 
 #ADD entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT [ "python", "/main.py" ]
+ENTRYPOINT "python /main.py"
