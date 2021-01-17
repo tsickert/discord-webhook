@@ -1,7 +1,8 @@
-FROM ubuntu
+FROM python:3.7
 
-RUN apt update && apt upgrade -y && apt install -y curl
+ADD main.py /main.py
+ADD requirements.txt /requirements.txt
 
-ADD entrypoint.sh entrypoint.sh
+RUN pip install -r /requirements.txt
 
-ENTRYPOINT [ "/entrypoint.sh" ]
+ENTRYPOINT [ "python", "/main.py" ]
