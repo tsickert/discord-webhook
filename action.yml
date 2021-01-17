@@ -1,6 +1,6 @@
 # action.yml
 name: 'Discord Webhook Action'
-description: 'Send custom messages to discord webhooks. Optionally, add a username and Avatar URL. Also supports sending JSON file for advanced cases.'
+description: 'Send custom messages to discord webhooks with simple action inputs or a JSON file.'
 branding:
   icon: message-square
   color: purple
