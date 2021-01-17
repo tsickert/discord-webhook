@@ -5,4 +5,6 @@ ADD requirements.txt requirements.txt
 
 RUN pip install -r requirements.txt
 
-ENTRYPOINT [ "python", "main.py" ]
+ADD entrypoint.sh entrypoint.sh
+
+ENTRYPOINT [ "entrpoint.sh" ]
