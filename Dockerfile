@@ -1,8 +1,7 @@
-FROM python:3.7
+FROM ubuntu
 
-ADD main.py /main.py
-ADD requirements.txt /requirements.txt
+RUN apt update && apt upgrade -y && apt install -y curl
 
-RUN pip install -r /requirements.txt
+ADD webhook.sh /webhook.sh
 
-ENTRYPOINT [ "python", "/main.py" ]
+ENTRYPOINT [ "/webhook.sh" ]

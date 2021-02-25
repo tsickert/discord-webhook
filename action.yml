@@ -8,7 +8,7 @@ inputs:
   webhook-url:
     description: 'Webhook URL from discord. See: https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks for details'
     required: true
-  content:  # id of input
+  content:
     description: 'Message that is sent via the webhook.'
     required: true
   username: 
@@ -24,13 +24,13 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - --url
+    - -w
     - ${{ inputs.webhook-url }}
-    - --content
+    - -c
     - ${{ inputs.content }}
-    - --username
+    - -u
     - ${{ inputs.username }}
-    - --avatar-url
+    - -a
     - ${{ inputs.avatar-url }}
-    - --raw-data
+    - -d
     - ${{ inputs.raw-data }}
