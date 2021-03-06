@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v0.0.7
+      uses: tsickert/discord-webhook@v2.0.2
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -54,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v0.0.7
+      uses: tsickert/discord-webhook@v2.0.2
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -116,7 +116,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v2.0.0
+        uses: tsickert/discord-webhook@v2.0.2
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
