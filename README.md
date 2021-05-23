@@ -75,7 +75,7 @@ on:
 
 Do you need to send more than just some basic content? Things like embeds, for example? That's supported in `v2.0.0` and above.
 
-That's supported. Instead of providing content inputs, you can override the
+Instead of providing content inputs, you can override the
 `raw-data` input with the path to a JSON file in your repository that contains your webhook message.
 
 _(Note that all inputs except for `webhook-url` are ignored when `raw-data` is provided)_
