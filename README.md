@@ -121,3 +121,9 @@ jobs:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
 ```
+
+## FAQ
+
+**Q**: Can I use `@` pings with this? They just show up as plain text.
+
+**A**: Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`. 
