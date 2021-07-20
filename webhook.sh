@@ -42,10 +42,7 @@ then
 elif [ "$filename" ]
 then
   echo sending file
-  curl --location --request POST "$webhook" \
-  --header 'Content-Type: multipart/form-data' \
-  --header 'Content-Disposition: filename="$filename"' \
-  -F "file=@$filename"
+  curl --location --request POST "$webhook" -F "file=@$filename"
 else
   echo sending simple body
   curl --location --request POST "$webhook" \
