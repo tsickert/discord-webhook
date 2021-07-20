@@ -18,7 +18,10 @@ inputs:
     description: 'URL for the avatar that should appear with the message.'
     required: false
   raw-data:
-    description: 'Name of a json file that will be sent instead as the data for the webhook'
+    description: 'Name of a json file that will be sent as the data for the webhook'
+    required: false
+  filename:
+    description: 'Name of a file that will be uploaded via the webhook'
     required: false
 runs:
   using: 'docker'
@@ -34,3 +37,5 @@ runs:
     - ${{ inputs.avatar-url }}
     - -d
     - ${{ inputs.raw-data }}
+    - -f
+    - ${{ inputs.filename }}

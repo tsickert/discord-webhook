@@ -11,6 +11,7 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 | username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
 | avatar-url | `false` | URL for the avatar that should appear with the message. |
 | raw-data | `false` | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**. |
+| filename | `false` | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, all other inputs (except `webhook-url`) are ignored**. |
 
 ## Usage
 
@@ -73,6 +74,8 @@ on:
 
 ### Advanced Use Cases
 
+#### Sending Raw JSON
+
 Do you need to send more than just some basic content? Things like embeds, for example? That's supported in `v2.0.0` and above.
 
 Instead of providing content inputs, you can override the
@@ -80,7 +83,7 @@ Instead of providing content inputs, you can override the
 
 _(Note that all inputs except for `webhook-url` are ignored when `raw-data` is provided)_
 
-#### Example
+##### Example
 
 Let's say we want to send a message with an embed. 
 
@@ -120,6 +123,50 @@ jobs:
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
+```
+
+#### Uploading Files
+
+Do you need to upload a file? Maybe you have a built artifact that you want to share or a daily update on progress
+that's tracked in a file. That's supported in `v3.0.0` and above.
+
+Instead of providing content inputs, you can override the `filename` input with the path to file in your workspace.
+
+_(Note that all inputs except for `webhook-url` are ignored when `raw-data` is provided)_
+_(Note `raw-data` overrides this input if it also provided)_
+
+##### Example
+
+Let's say we want upload a file.
+
+Add file to your repository or workspace via an action (for this example, this file is called `test.txt`).
+
+**IMPORTANT**: If you added the file to your respoitory, don't forget to pull in the files from your repository.
+
+```
+  - uses: actions/checkout@v2
+```
+
+This will allow the action see any files from the repository in the workspace. 
+
+The final action will look something like this:
+
+```yaml
+name: Hi
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v2.0.2
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          filename: test.txt
 ```
 
 ## FAQ
