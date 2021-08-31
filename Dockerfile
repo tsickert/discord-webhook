@@ -1,6 +1,4 @@
-FROM ubuntu
-
-RUN apt update && apt upgrade -y && apt install -y curl
+FROM ghcr.io/tsickert/curl-ubuntu
 
 ADD webhook.sh /webhook.sh
 
