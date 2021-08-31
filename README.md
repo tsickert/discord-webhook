@@ -2,6 +2,11 @@
 
 This action allows users to set up a GitHub Action that calls Discord webhooks with content message and, optionally, a custom username and avatar url.
 
+## Recent Updates
+
+- Support for file uploads (v3.0.0)
+- Improved performance by reducing built times by 66% (v3.0.1)
+
 ## Inputs
 
 | Name | Required | Description |
@@ -18,13 +23,13 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 ### Secrets
 
 _PSA_: Do not commit your webhook URL to a public repository. Webhooks do not require authentication, so anyone who has the webhook can use it.
-GitHub repositories support [secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) (under `settings->secrets`). Encrypt your webhook URLs. 
+GitHub repositories support [secrets](https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets) (under `settings->secrets`). Encrypt your webhook URLs.
 
 ### Scheduling
 
 GitHub Actions allow users to set up various triggers. One of the triggers is `schedule`. This allows users to set a POSIX cron timer to run the action.
 
-Below is an example that sends the message `"Test"` to the provided webhook. 
+Below is an example that sends the message `"Test"` to the provided webhook.
 
 ```yaml
 on:
@@ -36,13 +41,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v3.0.0
+      uses: tsickert/discord-webhook@v3.0.1
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
 ```
 
-_Disclaimer_: GitHub Actions don't seem to always respect the cron job precisely. My experience has been that crons run about 15 minutes after they're scheduled to and crons that should run per minute will likely only run once every 7-10 minutes. 
+_Disclaimer_: GitHub Actions don't seem to always respect the cron job precisely. My experience has been that crons run about 15 minutes after they're scheduled to and crons that should run per minute will likely only run once every 7-10 minutes.
 
 ### Manual Trigger
 
@@ -55,7 +60,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v3.0.0
+      uses: tsickert/discord-webhook@v3.0.1
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -85,7 +90,7 @@ _(Note that all inputs except for `webhook-url` are ignored when `raw-data` is p
 
 ##### Example
 
-Let's say we want to send a message with an embed. 
+Let's say we want to send a message with an embed.
 
 Add a JSON file to your repository with the content you want (for this example, this file is called `hi.json`).
 
@@ -97,13 +102,13 @@ Add a JSON file to your repository with the content you want (for this example, 
 ```
 
 **IMPORTANT**: Then, in the yaml where you define this action, you need to do one very important step, and that's adding a step
-to pull in the files from your repository. 
+to pull in the files from your repository.
 
 ```
   - uses: actions/checkout@v2
 ```
 
-This will allow the action to read the JSON that we added to the repository. 
+This will allow the action to read the JSON that we added to the repository.
 
 The final action will look something like this:
 
@@ -119,7 +124,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v3.0.0
+        uses: tsickert/discord-webhook@v3.0.1
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -163,7 +168,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v3.0.0
+        uses: tsickert/discord-webhook@v3.0.1
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
@@ -173,4 +178,4 @@ jobs:
 
 **Q**: Can I use `@` pings with this? They just show up as plain text.
 
-**A**: Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`. 
+**A**: Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
