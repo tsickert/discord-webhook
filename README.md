@@ -5,7 +5,7 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 ## Recent Updates
 
 - Support for file uploads (v3.0.0)
-- Improved performance by reducing built times by 66% (v3.0.1)
+- Improved performance by reducing build times by 66% (v3.0.1)
 
 ## Inputs
 
