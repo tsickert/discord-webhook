@@ -46,7 +46,8 @@ then
   curl --location --request POST "$webhook" \
     -F "file=@$filename" \
     -F "avatar_url=$avatar_url" \
-    -F "username=$username"
+    -F "username=$username" \
+    -F "content=$content"
 else
   echo sending simple body
   curl --location --request POST "$webhook" \
