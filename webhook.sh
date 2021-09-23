@@ -29,6 +29,7 @@ generate_post_data()
     "content": "$content",
     "username": "$username",
     "avatar_url": "$avatar_url"
+    "file": "@$filename"
 }
 EOF
 }
@@ -42,7 +43,10 @@ then
 elif [ "$filename" ]
 then
   echo sending file
-  curl --location --request POST "$webhook" -F "file=@$filename"
+  curl --location --request POST "$webhook" \
+    -F "file=@$filename" \
+    -F "avatar_url=$avatar_url" \
+    -F "username=$username"
 else
   echo sending simple body
   curl --location --request POST "$webhook" \
