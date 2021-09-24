@@ -1,3 +1,5 @@
+import datetime
+
 import requests
 import argparse
 import json
@@ -79,7 +81,8 @@ def construct_payload(args):
 
             timestamp = args[f'embed_{index}timestamp']
             if present(timestamp):
-                embed['timestamp'] = timestamp
+                date = datetime.datetime.strptime(timestamp, '%m/%d/%Y %H:%M:%S')
+                embed['timestamp'] = date.isoformat()
 
             color = args[f'embed_{index}color']
             if present(color):
