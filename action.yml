@@ -17,11 +17,47 @@ inputs:
   avatar-url:
     description: 'URL for the avatar that should appear with the message.'
     required: false
+  tts:
+    description: 'Boolean to indicate whether the webhook is text-to-speech'
+    required: false
   raw-data:
     description: 'Name of a json file that will be sent as the data for the webhook'
     required: false
   filename:
     description: 'Name of a file that will be uploaded via the webhook'
+    required: false
+  embed-title:
+    description: 'Embed title'
+    required: false
+  embed-description:
+    description: 'Embed description'
+    required: false
+  embed-timestamp:
+    description: 'Embed timestamp (ISO8601 format)'
+    required: false
+  embed-color:
+    description: 'Embed color (integer)'
+    required: false
+  embed-footer-text:
+    description: 'Embed footer text'
+    required: false
+  embed-footer-icon-url:
+    description: 'Embed footer icon url'
+    required: false
+  embed-image-url:
+    description: 'Embed image url'
+    required: false
+  embed-thumbnail-url:
+    description: 'Embed thumbnail url'
+    required: false
+  embed-author-name:
+    description: 'Embed embed author name'
+    required: false
+  embed-author-url:
+    description: 'Embed author url'
+    required: false
+  embed-author-icon-url:
+    description: 'Embed author icon'
     required: false
 runs:
   using: 'docker'
@@ -39,3 +75,25 @@ runs:
     - ${{ inputs.raw-data }}
     - -f
     - ${{ inputs.filename }}
+    - --embed-title
+    - ${{ inputs.embed-title }}
+    - --embed-description
+    - ${{ inputs.embed-description }}
+    - --embed-timestamp
+    - ${{ inputs.embed-timestamp }}
+    - --embed-color
+    - ${{ inputs.embed-color }}
+    - --embed-footer-text
+    - ${{ inputs.embed-footer-text }}
+    - --embed-footer-icon-url
+    - ${{ inputs.embed-footer-icon-url }}
+    - --embed-image-url
+    - ${{ inputs.embed-image-url }}
+    - --embed-thumbnail-url
+    - ${{ inputs.embed-thumbnail-url }}
+    - --embed-author-name
+    - ${{ inputs.embed-author-name }}
+    - --embed-author-url
+    - ${{ inputs.embed-author-url }}
+    - --embed-author-icon-url
+    - ${{ inputs.embed-author-icon-url }}
