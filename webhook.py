@@ -16,11 +16,15 @@ Thanks for using this action!
 """
 
 
+# Actions provide arguments as empty strings
+def present(field):
+    return field is not None and field != ""
+
+
 def has_values(obj: dict):
-    # Check if
     values = list(obj.values())
     for value in values:
-        if value is not None:
+        if present(value):
             return obj
 
     return None
@@ -42,18 +46,18 @@ def construct_footer(args, index):
 
 
 def construct_payload(args):
-    if args['raw_data'] is not None or args['raw_data'] == "":
+    if present(args['raw_data']):
         data_file = open(args['raw_data'])
         payload = json.load(data_file)
     else:
         payload = {}
-        if args['content'] is not None:
+        if present(args['content']):
             payload['content'] = args['content']
-        if args['username'] is not None:
+        if present(args['username']):
             payload['username'] = args['username']
-        if args['avatar_url'] is not None:
+        if present(args['avatar_url']):
             payload['avatar_url'] = args['avatar_url']
-        if args['tts'] is not None:
+        if present(args['tts']):
             payload['tts'] = args['tts']
 
         for i in range(DISCORD_EMBED_LIMIT):
@@ -62,7 +66,7 @@ def construct_payload(args):
                 index = f'{i + 1}_'
             embed = {}
             title = args[f'embed_{index}title']
-            if title is not None:
+            if present(title):
                 embed['title'] = title
 
             footer = construct_footer(args, index)
@@ -70,23 +74,23 @@ def construct_payload(args):
                 embed['footer'] = footer
 
             description = args[f'embed_{index}description']
-            if description is not None:
+            if present(description):
                 embed['description'] = description
 
             timestamp = args[f'embed_{index}timestamp']
-            if timestamp is not None:
+            if present(timestamp):
                 embed['timestamp'] = timestamp
 
             color = args[f'embed_{index}color']
-            if color is not None:
+            if present(color):
                 embed['color'] = color
 
             image_url = args[f'embed_{index}image_url']
-            if image_url is not None:
+            if present(image_url):
                 embed['image']['url'] = image_url
 
             thumbnail_url = args[f'embed_{index}thumbnail_url']
-            if thumbnail_url is not None:
+            if present(thumbnail_url):
                 embed['thumbnail']['url'] = thumbnail_url
 
             author = construct_author(args, index)
@@ -117,14 +121,14 @@ def execute_webhook(payload, filename=None):
     print(payload)
 
     # Use multipart/form-data
-    if filename is not None:
+    if present(filename):
         embeds_payload = None
         if 'embeds' in payload:
             payload, embeds_payload = split_payload_for_multi_message(payload)
 
         response = requests.post(args['webhook'], data=payload, files={'upload_file': open(filename, 'rb')})
 
-        if embeds_payload is not None:
+        if present(embeds_payload):
             execute_webhook(embeds_payload)
 
     # Use application/json
