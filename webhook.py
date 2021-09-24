@@ -87,11 +87,11 @@ def construct_payload(args):
 
             image_url = args[f'embed_{index}image_url']
             if present(image_url):
-                embed['image']['url'] = image_url
+                embed['image'] = {'url': image_url}
 
             thumbnail_url = args[f'embed_{index}thumbnail_url']
             if present(thumbnail_url):
-                embed['thumbnail']['url'] = thumbnail_url
+                embed['thumbnail'] = {'url': thumbnail_url}
 
             author = construct_author(args, index)
             if has_values(author):
