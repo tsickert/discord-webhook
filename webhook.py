@@ -125,14 +125,11 @@ def execute_webhook(payload, filename=None):
 
     # Use multipart/form-data
     if present(filename):
-        embeds_payload = None
         if 'embeds' in payload:
             payload, embeds_payload = split_payload_for_multi_message(payload)
+            execute_webhook(embeds_payload)
 
         response = requests.post(args['webhook'], data=payload, files={'upload_file': open(filename, 'rb')})
-
-        if present(embeds_payload):
-            execute_webhook(embeds_payload)
 
     # Use application/json
     else:
