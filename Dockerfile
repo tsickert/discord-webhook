@@ -1,5 +1,7 @@
-FROM ghcr.io/tsickert/curl-ubuntu
+FROM ghcr.io/tsickert/python
 
-ADD webhook.sh /webhook.sh
+ADD webhook.py /webhook.py
 
-ENTRYPOINT [ "/webhook.sh" ]
+RUN chmod 755 /webhook.py
+
+ENTRYPOINT ["python3", "/webhook.py" ]

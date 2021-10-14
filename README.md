@@ -6,6 +6,7 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 
 - Support for file uploads (v3.0.0)
 - Improved performance by reducing build times by 66% (v3.0.1)
+- Full API support for executing webhooks
 
 ## Inputs
 
@@ -15,8 +16,20 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 | content    | `false`         | Message that is sent via the webhook.            |
 | username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
 | avatar-url | `false` | URL for the avatar that should appear with the message. |
+| tts | `false` | Whether the message is text-to-speech |
 | raw-data | `false` | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**. |
 | filename | `false` | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**. |
+| embed-title | `false` | Title for embed. |
+| embed-description | `false` | Description for embed. |
+| embed-timestamp | `false` | Timestamp for embed (ISO8601 format). |
+| embed-color | `false` | Color for embed (integer). |
+| embed-footer-text | `false` | Text content for embed footer. |
+| embed-footer-icon-url | `false` | Icon URL for embed footer.|
+| embed-image-url | `false` | Embed image URL. |
+| embed-thumbnail-url | `false` | Embed Thumbnail URL |
+| embed-author-name | `false` | Embed Author Name|
+| embed-author-url | `false` | Embed Author URL |
+| embed-author-icon-url | `false` | Embed Author Icon URL |
 
 ## Usage
 
@@ -41,7 +54,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v3.1.0
+      uses: tsickert/discord-webhook@v4.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -60,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v3.1.0
+      uses: tsickert/discord-webhook@v4.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -124,7 +137,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v3.1.0
+        uses: tsickert/discord-webhook@v4.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -132,7 +145,7 @@ jobs:
 
 #### Uploading Files
 
-Do you need to upload a file? Maybe you have a built artifact that you want to share or a daily update on progress
+Do you need to upload a file? Maybe you have a build artifact that you want to share or a daily update on progress
 that's tracked in a file. That's supported in `v3.0.0` and above.
 
 Instead of providing content inputs, you can override the `filename` input with the path to file in your workspace.
@@ -168,7 +181,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v3.1.0
+        uses: tsickert/discord-webhook@v4.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
@@ -179,3 +192,12 @@ jobs:
 **Q**: Can I use `@` pings with this? They just show up as plain text.
 
 **A**: Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
+
+**Q**: Help, something is wrong, my webhook isn't sending!
+
+**A**: Sorry to hear that! Since this action provides a fairly robust subset of the webhook functionality. However, the 
+discord webhook API is complicated and has a long of conditions and restrictions. The implementation of the webhook
+provides a few guard rails against misuse, but does not protect against them all. This is because these restrictions may 
+change and the Discord API should ultimately be the source of truth for those restrictions. If you run into issues, please
+be sure to check the action outputs. The payload is printed there, so feel free to use it with curl or postman to validate
+that the issue is with the payload. If it's not, please open an issue in this repository and I'll take a look!
