@@ -1,11 +1,12 @@
-name: Echo Server Test
+name: Operating System Compatability Test
 
 on:
   workflow_dispatch:
     inputs:
-      version:
+      action_version:
         description: Version
         default: v4.0.0
+        type: string
         required: false
 
 jobs:
@@ -26,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@${{ inputs.version }}
+        uses: tsickert/discord-webhook@${{ github.event.inputs.action_version }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: hey there <@211894927997534208>
+          content: Foobar
