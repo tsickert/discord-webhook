@@ -1,0 +1,38 @@
+name: Echo Server Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Version
+        default: v4.0.0
+        required: false
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-all-os:
+    strategy:
+      matrix:
+        os:
+          - windows-latest
+          - windows-2022
+          - windows2019
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - macos-12
+          - macos-11
+          - macos-10.15
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@${{ github.event.inputs.message }}
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: hey there <@211894927997534208>
