@@ -3,7 +3,7 @@ name: Echo Server Test
 on:
   workflow_dispatch:
     inputs:
-      name:
+      version:
         description: Version
         default: v4.0.0
         required: false
@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@${{ github.event.inputs.message }}
+        uses: tsickert/discord-webhook@${{ inputs.version }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           content: hey there <@211894927997534208>
