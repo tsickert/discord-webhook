@@ -1,4 +1,4 @@
-name: Echo Server Test
+name: Operating System Compatability Test
 
 on:
   workflow_dispatch:
