@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@${{ github.event.inputs.action_version }}
+        uses: "tsickert/discord-webhook@${{ github.event.inputs.action_version }}"
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           content: Foobar
