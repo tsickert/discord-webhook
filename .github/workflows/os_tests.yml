@@ -6,6 +6,7 @@ on:
       version:
         description: Version
         default: v4.0.0
+        type: string
         required: false
 
 jobs:
@@ -29,4 +30,4 @@ jobs:
         uses: tsickert/discord-webhook@${{ inputs.version }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: hey there <@211894927997534208>
+          content: Foobar
