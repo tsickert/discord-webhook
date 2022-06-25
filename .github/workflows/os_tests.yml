@@ -23,11 +23,13 @@ jobs:
           - macos-12
           - macos-11
           - macos-10.15
+        version:
+          - ${{ github.event.inputs.action_version }}
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: "tsickert/discord-webhook@${{ github.event.inputs.action_version }}"
+        uses: "tsickert/discord-webhook@${{ matrix.version }}"
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           content: Foobar
