@@ -3,7 +3,7 @@ name: Operating System Compatability Test
 on:
   workflow_dispatch:
     inputs:
-      version:
+      action_version:
         description: Version
         default: v4.0.0
         type: string
@@ -27,7 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@${{ github.event.inputs.version }}
+        uses: tsickert/discord-webhook@${{ inputs.action_version }}
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           content: Foobar
