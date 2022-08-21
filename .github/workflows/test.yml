@@ -18,6 +18,7 @@ jobs:
           npm run all
   test: # make sure the action works on a clean machine without building
     strategy:
+      max-parallel: 1
       matrix:
         os:
           - windows-latest
@@ -29,9 +30,6 @@ jobs:
           - macos-12
           - macos-11
           - macos-10.15
-    concurrency:
-      group: test-webhook
-      cancel-in-progress: false
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
