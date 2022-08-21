@@ -29,6 +29,7 @@ jobs:
           - macos-12
           - macos-11
           - macos-10.15
+    concurrency: test-webhook
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
