@@ -1,0 +1,32 @@
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'releases/*'
+  workflow_dispatch:
+
+jobs:
+  test: # make sure the action works on a clean machine without building
+    strategy:
+      max-parallel: 2
+      matrix:
+        os:
+          - windows-latest
+          - windows-2022
+          - windows2019
+          - ubuntu-22.04
+          - ubuntu-20.04
+          - ubuntu-18.04
+          - macos-12
+          - macos-11
+          - macos-10.15
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Upload File
+        uses: ./
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          filename: __tests__/data/content-only.json
+          username: OS Tester (${{ matrix.os }})
+          content: You should definintely be able to do this
