@@ -4,32 +4,35 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 
 ## Recent Updates
 
-- Support for embeds (v4.0.0)
+- Support for multiple operating systems (v5.0.0)
+- Improved performance (v5.0.0)
+- Changed to JS Action (v5.0.0)
+- Support for embeds (v5.0.0)
 - Support for file uploads (v3.0.0)
 - Improved performance by reducing build times by 66% (v3.0.1)
 
 ## Inputs
 
-| Name | Required | Description |
-|------|----------|-------------|
-| webhook-url | `true`        |  Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details           |
-| content    | `false`         | Message that is sent via the webhook.            |
-| username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
-| avatar-url | `false` | URL for the avatar that should appear with the message. |
-| tts | `false` | Whether the message is text-to-speech |
-| raw-data | `false` | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**. |
-| filename | `false` | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**. |
-| embed-title | `false` | Title for embed. |
-| embed-description | `false` | Description for embed. |
-| embed-timestamp | `false` | Timestamp for embed (ISO8601 format). |
-| embed-color | `false` | Color for embed (integer). |
-| embed-footer-text | `false` | Text content for embed footer. |
-| embed-footer-icon-url | `false` | Icon URL for embed footer.|
-| embed-image-url | `false` | Embed image URL. |
-| embed-thumbnail-url | `false` | Embed Thumbnail URL |
-| embed-author-name | `false` | Embed Author Name|
-| embed-author-url | `false` | Embed Author URL |
-| embed-author-icon-url | `false` | Embed Author Icon URL |
+| Name                  | Required | Description                                                                                                                                       |
+|-----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| webhook-url           | `true`   | Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details |
+| content               | `false`  | Message that is sent via the webhook.                                                                                                             |
+| username              | `false`  | The username that should appear to send the message. Note: username will have the "bot" badge next to their name.                                 |
+| avatar-url            | `false`  | URL for the avatar that should appear with the message.                                                                                           |
+| tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |
+| raw-data              | `false`  | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**.                                  |
+| filename              | `false`  | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**.       |
+| embed-title           | `false`  | Title for embed.                                                                                                                                  |
+| embed-description     | `false`  | Description for embed.                                                                                                                            |
+| embed-timestamp       | `false`  | Timestamp for embed (ISO8601 format).                                                                                                             |
+| embed-color           | `false`  | Color for embed (integer).                                                                                                                        |
+| embed-footer-text     | `false`  | Text content for embed footer.                                                                                                                    |
+| embed-footer-icon-url | `false`  | Icon URL for embed footer.                                                                                                                        |
+| embed-image-url       | `false`  | Embed image URL.                                                                                                                                  |
+| embed-thumbnail-url   | `false`  | Embed Thumbnail URL                                                                                                                               |
+| embed-author-name     | `false`  | Embed Author Name                                                                                                                                 |
+| embed-author-url      | `false`  | Embed Author URL                                                                                                                                  |
+| embed-author-icon-url | `false`  | Embed Author Icon URL                                                                                                                             |
 
 ## Usage
 
@@ -54,7 +57,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v4.0.0
+      uses: tsickert/discord-webhook@v5.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -73,7 +76,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v4.0.0
+      uses: tsickert/discord-webhook@v5.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -137,7 +140,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
+        uses: tsickert/discord-webhook@v5.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -181,7 +184,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
+        uses: tsickert/discord-webhook@v5.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
