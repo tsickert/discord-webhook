@@ -2,6 +2,8 @@
 
 This action allows users to set up a GitHub Action that calls Discord webhooks with content message and, optionally, a custom username and avatar url.
 
+[![Runs on All Action Runners](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml/badge.svg)](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml)
+
 ## Recent Updates
 
 - Support for multiple operating systems (v5.0.0)
