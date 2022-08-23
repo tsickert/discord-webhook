@@ -2,34 +2,39 @@
 
 This action allows users to set up a GitHub Action that calls Discord webhooks with content message and, optionally, a custom username and avatar url.
 
+[![Runs on All Action Runners](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml/badge.svg)](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml)
+
 ## Recent Updates
 
-- Support for embeds (v4.0.0)
+- Support for multiple operating systems (v5.0.0)
+- Improved performance (v5.0.0)
+- Changed to JS Action (v5.0.0)
+- Support for embeds (v5.0.0)
 - Support for file uploads (v3.0.0)
 - Improved performance by reducing build times by 66% (v3.0.1)
 
 ## Inputs
 
-| Name | Required | Description |
-|------|----------|-------------|
-| webhook-url | `true`        |  Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details           |
-| content    | `false`         | Message that is sent via the webhook.            |
-| username    | `false`       |  The username that should appear to send the message. Note: username will have the "bot" badge next to their name.           |
-| avatar-url | `false` | URL for the avatar that should appear with the message. |
-| tts | `false` | Whether the message is text-to-speech |
-| raw-data | `false` | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**. |
-| filename | `false` | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**. |
-| embed-title | `false` | Title for embed. |
-| embed-description | `false` | Description for embed. |
-| embed-timestamp | `false` | Timestamp for embed (ISO8601 format). |
-| embed-color | `false` | Color for embed (integer). |
-| embed-footer-text | `false` | Text content for embed footer. |
-| embed-footer-icon-url | `false` | Icon URL for embed footer.|
-| embed-image-url | `false` | Embed image URL. |
-| embed-thumbnail-url | `false` | Embed Thumbnail URL |
-| embed-author-name | `false` | Embed Author Name|
-| embed-author-url | `false` | Embed Author URL |
-| embed-author-icon-url | `false` | Embed Author Icon URL |
+| Name                  | Required | Description                                                                                                                                       |
+|-----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+| webhook-url           | `true`   | Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details |
+| content               | `false`  | Message that is sent via the webhook.                                                                                                             |
+| username              | `false`  | The username that should appear to send the message. Note: username will have the "bot" badge next to their name.                                 |
+| avatar-url            | `false`  | URL for the avatar that should appear with the message.                                                                                           |
+| tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |
+| raw-data              | `false`  | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**.                                  |
+| filename              | `false`  | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**.       |
+| embed-title           | `false`  | Title for embed.                                                                                                                                  |
+| embed-description     | `false`  | Description for embed.                                                                                                                            |
+| embed-timestamp       | `false`  | Timestamp for embed (ISO8601 format).                                                                                                             |
+| embed-color           | `false`  | Color for embed (integer).                                                                                                                        |
+| embed-footer-text     | `false`  | Text content for embed footer.                                                                                                                    |
+| embed-footer-icon-url | `false`  | Icon URL for embed footer.                                                                                                                        |
+| embed-image-url       | `false`  | Embed image URL.                                                                                                                                  |
+| embed-thumbnail-url   | `false`  | Embed Thumbnail URL                                                                                                                               |
+| embed-author-name     | `false`  | Embed Author Name                                                                                                                                 |
+| embed-author-url      | `false`  | Embed Author URL                                                                                                                                  |
+| embed-author-icon-url | `false`  | Embed Author Icon URL                                                                                                                             |
 
 ## Usage
 
@@ -54,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v4.0.0
+      uses: tsickert/discord-webhook@v5.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -73,7 +78,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v4.0.0
+      uses: tsickert/discord-webhook@v5.0.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -137,7 +142,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
+        uses: tsickert/discord-webhook@v5.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -165,7 +170,7 @@ Add file to your repository or workspace via an action (for this example, this f
   - uses: actions/checkout@v2
 ```
 
-This will allow the action see any files from the repository in the workspace. 
+This will allow the action see any files from the repository in the workspace.
 
 The final action will look something like this:
 
@@ -181,7 +186,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v4.0.0
+        uses: tsickert/discord-webhook@v5.0.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
@@ -195,11 +200,11 @@ jobs:
 
 **Q**: Help, something is wrong, my webhook isn't sending!
 
-**A**: Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions. 
-The implementation of the webhook provides a few guard rails against misuse, but does not protect against them all. 
-Restrictions are set by Discord and may change--therefore the Discord API should ultimately be the source of truth for 
-those restrictions. If you run into issues, please be sure to check the action outputs. The payload is printed there, 
-so feel free to use it with curl or postman to first validate that the issue is not with the payload. If it's not, 
+**A**: Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions.
+The implementation of the webhook provides a few guard rails against misuse, but does not protect against them all.
+Restrictions are set by Discord and may change--therefore the Discord API should ultimately be the source of truth for
+those restrictions. If you run into issues, please be sure to check the action outputs. The payload is printed there,
+so feel free to use it with curl or postman to first validate that the issue is not with the payload. If it's not,
 please open an issue in this repository and I'll take a look!
 
 **Q**: What does "Near-full" support of the webhook API mean?
