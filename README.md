@@ -9,9 +9,8 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
 - Changed to JS Action (v5.0.0)
-- Support for embeds (v5.0.0)
+- Support for embeds (v4.0.0)
 - Support for file uploads (v3.0.0)
-- Improved performance by reducing build times by 66% (v3.0.1)
 
 ## Inputs
 
