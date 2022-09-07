@@ -29,6 +29,9 @@ inputs:
   embed-title:
     description: 'Embed title'
     required: false
+  embed-url:
+    description: 'Embed URL'
+    required: false
   embed-description:
     description: 'Embed description'
     required: false
