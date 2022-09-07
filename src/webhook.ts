@@ -20,7 +20,7 @@ const TEXT = 'text'
 const FILENAME = 'filename'
 
 const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL]
-const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR]
+const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, URL]
 const EMBED_AUTHOR_KEYS = [NAME, URL, ICON_URL]
 const EMBED_FOOTER_KEYS = [TEXT, ICON_URL]
 const EMBED_IMAGE_KEYS = [URL]
@@ -52,7 +52,7 @@ function createEmbedObject(): Map<string, unknown> {
       'embed-author'
     )
     if (embedAuthorMap.size > 0) {
-      embedPayloadMap.set('author', Object.fromEntries(embedPayloadMap))
+      embedPayloadMap.set('author', Object.fromEntries(embedAuthorMap))
     }
     const embedFooterMap = parseMapFromParameters(
       EMBED_FOOTER_KEYS,

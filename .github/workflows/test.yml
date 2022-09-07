@@ -50,6 +50,7 @@ jobs:
           username: Bill
           avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
           embed-title: "Foo"
+          embed-url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
           embed-description: "Bar [test](https://google.com)"
           embed-author-name: "Bill"
           embed-author-icon-url: "https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256"

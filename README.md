@@ -8,6 +8,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 
 ## Recent Updates
 
+- Support for embed URL
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
 - Changed to TypeScript Action (v5.0.0)
@@ -26,6 +27,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 | raw-data              | `false`  | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**.                                  |
 | filename              | `false`  | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**.       |
 | embed-title           | `false`  | Title for embed.                                                                                                                                  |
+| embed-url             | `false`  | URL for embed.                                                                                                                                    |
 | embed-description     | `false`  | Description for embed.                                                                                                                            |
 | embed-timestamp       | `false`  | Timestamp for embed (ISO8601 format).                                                                                                             |
 | embed-color           | `false`  | Color for embed (integer).                                                                                                                        |
@@ -60,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.0.0
+      uses: tsickert/discord-webhook@v5.1.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -79,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.0.0
+      uses: tsickert/discord-webhook@v5.1.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -143,7 +145,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.0.0
+        uses: tsickert/discord-webhook@v5.1.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -187,7 +189,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.0.0
+        uses: tsickert/discord-webhook@v5.1.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
