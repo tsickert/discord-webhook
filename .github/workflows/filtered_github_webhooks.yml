@@ -7,9 +7,13 @@ on:
 
 jobs:
   notify_if_not_dependabot:
-    if:  ${{ github.actor }} != 'dependabot'
+    if:  ${{ github.event.pull_request.user.login }} != 'dependabot'
     runs-on: ubuntu-latest
     steps:
+    - id: truncate-body
+      run: |
+        STRING= ${{ github.event.pull_request.body }} | sed 's/\(.\{3997\}\).*/\1.../'
+        echo "::set-output name=body::$STRING"
     - name: Discord Webhook Action
       uses: tsickert/discord-webhook@v5.1.0
       with:
@@ -20,5 +24,5 @@ jobs:
         embed-author-url: ${{ github.event.pull_request.user.html_url }}
         embed-author-icon-url: ${{ github.event.pull_request.user.avatar_url }}
         embed-title: '[${{ github.event.repository.full_name }}] Pull request ${{ github.event.action }}: #${{ github.event.number }} ${{ github.event.pull_request.title }}'
-        embed-description: ${{ github.event.pull_request.body }}
+        embed-description: ${{ steps.truncate-body.outputs.body }}
         embed-url: ${{ github.event.pull_request.html_url }}
