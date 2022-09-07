@@ -12,12 +12,6 @@ jobs:
     if: contains(github.event.pull_request.user.login, 'dependabot')
     runs-on: ubuntu-latest
     steps:
-    - name: Save GitHub Event to File
-      run: printf '${{ toJSON(github.event) }}' > event.json
-    - uses: actions/upload-artifact@v3
-      with:
-        name: event.json
-        path: event.json
     - id: truncate-body
       run: |
         STRING=$("${{ github.event.pull_request.body }}" | cut -c -4000
