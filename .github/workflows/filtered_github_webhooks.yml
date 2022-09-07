@@ -1,3 +1,5 @@
+name: Execute Filtered GitHub Webhook
+
 on:
   pull_request:
     types:
@@ -7,7 +9,7 @@ on:
 
 jobs:
   notify_if_not_dependabot:
-    if:  ${{ github.event.pull_request.user.login }} != 'dependabot'
+    if: contains(github.event.pull_request.user.login', 'dependabot')
     runs-on: ubuntu-latest
     steps:
     - name: Save GitHub Event to File
@@ -21,7 +23,7 @@ jobs:
         STRING=$("${{ github.event.pull_request.body }}" | cut -c -4000
         echo "::set-output name=body::$STRING"
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.1.0
+      uses: tsickert/discord-webhook@v5.1.1
       with:
         webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
         username: GitHub
