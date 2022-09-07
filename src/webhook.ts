@@ -52,7 +52,7 @@ function createEmbedObject(): Map<string, unknown> {
       'embed-author'
     )
     if (embedAuthorMap.size > 0) {
-      embedPayloadMap.set('author', Object.fromEntries(embedPayloadMap))
+      embedPayloadMap.set('author', Object.fromEntries(embedAuthorMap))
     }
     const embedFooterMap = parseMapFromParameters(
       EMBED_FOOTER_KEYS,
