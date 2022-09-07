@@ -10,9 +10,15 @@ jobs:
     if:  ${{ github.event.pull_request.user.login }} != 'dependabot'
     runs-on: ubuntu-latest
     steps:
+    - name: Save GitHub Event to File
+      run: printf '${{ toJSON(github.event) }}' > event.json
+    - uses: actions/upload-artifact@v3
+      with:
+        name: event.json
+        path: event.json
     - id: truncate-body
       run: |
-        STRING=$("${{ github.event.pull_request.body }}" | sed 's/\(.\{3997\}\).*/\1.../')
+        STRING=$("${{ github.event.pull_request.body }}" | cut -c -4000
         echo "::set-output name=body::$STRING"
     - name: Discord Webhook Action
       uses: tsickert/discord-webhook@v5.1.0
