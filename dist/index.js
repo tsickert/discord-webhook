@@ -87,7 +87,7 @@ function createEmbedObject() {
     if (embedPayloadMap.size > 0) {
         const embedAuthorMap = parseMapFromParameters(EMBED_AUTHOR_KEYS, 'embed-author');
         if (embedAuthorMap.size > 0) {
-            embedPayloadMap.set('author', Object.fromEntries(embedPayloadMap));
+            embedPayloadMap.set('author', Object.fromEntries(embedAuthorMap));
         }
         const embedFooterMap = parseMapFromParameters(EMBED_FOOTER_KEYS, 'embed-footer');
         if (embedFooterMap.size > 0) {
