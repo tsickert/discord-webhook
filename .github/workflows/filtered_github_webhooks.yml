@@ -14,7 +14,7 @@ jobs:
     steps:
     - id: truncate-body
       run: |
-        STRING=$("${{ github.event.pull_request.body }}" | cut -c -4000
+        STRING=$("${{ github.event.pull_request.body }}" | cut -c -4000)
         echo "::set-output name=body::$STRING"
     - name: Discord Webhook Action
       uses: tsickert/discord-webhook@v5.1.1
