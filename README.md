@@ -1,15 +1,18 @@
 # Discord Webhook Action
 
+[![Runs on All Action Runners](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml/badge.svg)](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml)
+
 This action allows users to set up a GitHub Action that calls Discord webhooks with content message and, optionally, a custom username and avatar url.
+
+Want to know more about Discord Webhooks? Check out the [intro](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and [documentation](https://discord.com/developers/docs/resources/webhook#execute-webhook) from Discord.
 
 ## Recent Updates
 
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
-- Changed to JS Action (v5.0.0)
-- Support for embeds (v5.0.0)
+- Changed to TypeScript Action (v5.0.0)
+- Support for embeds (v4.0.0)
 - Support for file uploads (v3.0.0)
-- Improved performance by reducing build times by 66% (v3.0.1)
 
 ## Inputs
 
