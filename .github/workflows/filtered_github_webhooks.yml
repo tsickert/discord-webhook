@@ -9,7 +9,7 @@ on:
 
 jobs:
   notify_if_not_dependabot:
-    if: contains(github.event.pull_request.user.login, 'dependabot')
+    if: ${{ !contains(github.event.pull_request.user.login, 'dependabot') }}
     runs-on: ubuntu-latest
     steps:
     - id: truncate-body
