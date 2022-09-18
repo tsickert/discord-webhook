@@ -61,6 +61,8 @@ jobs:
           embed-footer-text: "Foot text [test](https://google.com)"
           embed-color: 15430476
           embed-timestamp: "2021-09-24T02:17:53+0000"
+      - name: Sleep for a second
+        run: sleep 1s
       - name: Discord Webhook Action With Embed Description That's Too Long
         uses: ./
         with:
