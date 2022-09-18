@@ -8,6 +8,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 
 ## Recent Updates
 
+- Add Description Character limit truncation (5.2.0)
 - Support for embed URL (5.1.0)
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
@@ -62,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.1.1
+      uses: tsickert/discord-webhook@v5.2.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -81,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.1.1
+      uses: tsickert/discord-webhook@v5.2.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -145,7 +146,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.1.1
+        uses: tsickert/discord-webhook@v5.2.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -189,7 +190,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.1.1
+        uses: tsickert/discord-webhook@v5.2.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
