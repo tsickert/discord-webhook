@@ -101,3 +101,5 @@ lib/**/*
 # JetBrains
 .idea
 *.iml
+
+*.history

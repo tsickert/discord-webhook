@@ -8,7 +8,8 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 
 ## Recent Updates
 
-- Support for embed URL (5.1.0)
+- Add Description Character limit truncation (v5.2.0)
+- Support for embed URL (v5.1.0)
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
 - Changed to TypeScript Action (v5.0.0)
@@ -62,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.1.1
+      uses: tsickert/discord-webhook@v5.2.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -81,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.1.1
+      uses: tsickert/discord-webhook@v5.2.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -145,7 +146,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.1.1
+        uses: tsickert/discord-webhook@v5.2.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -189,7 +190,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.1.1
+        uses: tsickert/discord-webhook@v5.2.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt
@@ -197,20 +198,22 @@ jobs:
 
 ## FAQ
 
-**Q**: Can I use `@` pings with this? They just show up as plain text.
+#### Can I use `@` pings with this? They just show up as plain text.
 
-**A**: Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
+Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
 
-**Q**: Help, something is wrong, my webhook isn't sending!
+#### Help, something is wrong, my webhook isn't sending!
 
-**A**: Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions.
+Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions.
 The implementation of the webhook provides a few guard rails against misuse, but does not protect against them all.
 Restrictions are set by Discord and may change--therefore the Discord API should ultimately be the source of truth for
 those restrictions. If you run into issues, please be sure to check the action outputs. The payload is printed there,
 so feel free to use it with curl or postman to first validate that the issue is not with the payload. If it's not,
 please open an issue in this repository and I'll take a look!
 
-**Q**: What does "Near-full" support of the webhook API mean?
+#### What does "Near-full" support of the webhook API mean?
 
-**A**: The Discord API supports up to 10 embeds per webhook and also offers additional `fields` in the embed. Due to the input format for actions, I decided to limit it to one embed and I decided not to support fields. (`fields` seem to be bold text above non-bold text, so they seem reproducable without the explicit field). If you need to have multiple embeds, I would suggest invoking the action multiple times. If requested, I can explore providing the additional embeds and fields, but based on feedback I was getting during dev, the fields provided currently suited most needs. 
+The Discord API supports up to 10 embeds per webhook and also offers additional `fields` in the embed. Due to the input format for actions, I decided to limit it to one embed and I decided not to support fields. (`fields` seem to be bold text above non-bold text, so they seem reproducable without the explicit field). If you need to have multiple embeds, I would suggest invoking the action multiple times. If requested, I can explore providing the additional embeds and fields, but based on feedback I was getting during dev, the fields provided currently suited most needs. 
+
+The action also doesn't support threads. Support coming soon. 
 

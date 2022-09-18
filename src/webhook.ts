@@ -26,6 +26,8 @@ const EMBED_FOOTER_KEYS = [TEXT, ICON_URL]
 const EMBED_IMAGE_KEYS = [URL]
 const EMBED_THUMBNAIL_KEYS = [URL]
 
+const DESCRIPTION_LIMIT = 4096
+
 function createPayload(): Record<string, unknown> {
   // If raw-data provided, load the file and ignore the other parameters
   const rawData = core.getInput(RAW_DATA)
@@ -100,6 +102,13 @@ function parseMapFromParameters(
       const parsedDate = new Date(value)
       value = parsedDate.toISOString()
     }
+
+    if (parameter === DESCRIPTION) {
+      if (value.length > DESCRIPTION_LIMIT) {
+        value = value.substring(0, DESCRIPTION_LIMIT)
+      }
+    }
+
     core.info(`${inputKey}: ${value}`)
     if (value.length > 0) parameterMap.set(parameter.replace('-', '_'), value)
   }
