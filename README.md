@@ -8,8 +8,8 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 
 ## Recent Updates
 
-- Add Description Character limit truncation (5.2.0)
-- Support for embed URL (5.1.0)
+- Add Description Character limit truncation (v5.2.0)
+- Support for embed URL (v5.1.0)
 - Support for multiple operating systems (v5.0.0)
 - Improved performance (v5.0.0)
 - Changed to TypeScript Action (v5.0.0)
