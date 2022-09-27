@@ -18,6 +18,7 @@ const URL = 'url'
 const ICON_URL = 'icon-url'
 const TEXT = 'text'
 const FILENAME = 'filename'
+const THREAD_ID = 'thread-id'
 
 const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL]
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, URL]
@@ -130,9 +131,14 @@ async function handleResponse(response: TypedResponse<unknown>): Promise<void> {
 
 export async function executeWebhook(): Promise<void> {
   const client = new HttpClient()
-  const webhookUrl = core.getInput(WEBHOOK_URL)
+  let webhookUrl = core.getInput(WEBHOOK_URL)
   const filename = core.getInput(FILENAME)
+  const threadId = core.getInput(THREAD_ID)
   const payload = createPayload()
+
+  if (threadId !== '') {
+    webhookUrl = `${webhookUrl}?thread_id=${threadId}`
+  }
 
   if (filename !== '') {
     const formData = new FormData()

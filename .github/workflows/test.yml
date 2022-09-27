@@ -81,3 +81,11 @@ jobs:
           embed-footer-text: "Foot text [test](https://google.com)"
           embed-color: 15430476
           embed-timestamp: "2021-09-24T02:17:53+0000"
+      - name: Discord Webhook Action to Thread
+        uses: ./
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          username: Bill
+          content: Threaded message
+          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
+          thread-id:  ${{ secrets.TEST_THREAD_ID }}
