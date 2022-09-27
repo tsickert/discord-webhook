@@ -8,6 +8,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 
 ## Recent Updates
 
+- Support for Thread ID added (v5.3.0)
 - Add Description Character limit truncation (v5.2.0)
 - Support for embed URL (v5.1.0)
 - Support for multiple operating systems (v5.0.0)
@@ -22,6 +23,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 |-----------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------|
 | webhook-url           | `true`   | Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details |
 | content               | `false`  | Message that is sent via the webhook                                                                                                              |
+| thread-id             | `false`  | ID of the thread you want the webhook to send the message into (will automatically unarchive threads)                                             |
 | username              | `false`  | The username that should appear to send the message. Note: username will have the "bot" badge next to their name                                  |
 | avatar-url            | `false`  | URL for the avatar that should appear with the message                                                                                            |
 | tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |
@@ -41,6 +43,8 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 | embed-author-icon-url | `false`  | Embed Author Icon URL                                                                                                                             |
 
 ## Usage
+
+Want to see some full examples? Check out the [`test`](https://github.com/tsickert/discord-webhook/blob/4543a29f31afb1608487e8d9cb3d380975669316/.github/workflows/test.yml) workflow!
 
 ### Secrets
 
@@ -63,7 +67,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.2.0
+      uses: tsickert/discord-webhook@v5.3.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -82,7 +86,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.2.0
+      uses: tsickert/discord-webhook@v5.3.0
       with:
         webhook-url: ${{ secrets.WEBHOOK_URL }}
         content: "Test"
@@ -146,7 +150,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.2.0
+        uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           raw-data: hi.json
@@ -190,7 +194,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.2.0
+        uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
           filename: test.txt

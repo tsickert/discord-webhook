@@ -61,6 +61,7 @@ const URL = 'url';
 const ICON_URL = 'icon-url';
 const TEXT = 'text';
 const FILENAME = 'filename';
+const THREAD_ID = 'thread-id';
 const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL];
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, URL];
 const EMBED_AUTHOR_KEYS = [NAME, URL, ICON_URL];
@@ -142,9 +143,13 @@ function handleResponse(response) {
 function executeWebhook() {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new http_client_1.HttpClient();
-        const webhookUrl = core.getInput(WEBHOOK_URL);
+        let webhookUrl = core.getInput(WEBHOOK_URL);
         const filename = core.getInput(FILENAME);
+        const threadId = core.getInput(THREAD_ID);
         const payload = createPayload();
+        if (threadId !== '') {
+            webhookUrl = `${webhookUrl}?thread_id=${threadId}`;
+        }
         if (filename !== '') {
             const formData = new form_data_1.default();
             formData.append('upload-file', (0, fs_1.createReadStream)(filename));
