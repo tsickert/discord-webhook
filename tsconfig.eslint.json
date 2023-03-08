@@ -1,0 +1,8 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "jest.config.ts",
+    "src/*.ts",
+    "__tests__/*.ts"
+  ]
+}
