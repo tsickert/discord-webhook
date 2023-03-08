@@ -1,1 +1,3 @@
+```ansi
 [4;38;5;34mThis is some blue, underlined text.[0m
+```
