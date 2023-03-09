@@ -206,6 +206,19 @@ jobs:
 
 Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
 
+#### How can I include multiline texts?
+
+You can achieve that using YAML's [block scalar literal style](https://yaml.org/spec/1.2.2/#literal-style), using a pipe `|` to tell YAML to keep the newlines in your text.
+
+For example, this is how you can write a multiline `embed-description`:
+
+```yaml
+  embed-description: |
+    As we used the pipe,
+    YAML will keep the newlines on our text.
+    Awesome!
+```
+
 #### Help, something is wrong, my webhook isn't sending!
 
 Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions.
