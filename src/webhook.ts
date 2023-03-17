@@ -9,6 +9,7 @@ const CONTENT = 'content'
 const USERNAME = 'username'
 const AVATAR_URL = 'avatar-url'
 const RAW_DATA = 'raw-data'
+const RAW_CONTENT = 'raw-content'
 const TITLE = 'title'
 const DESCRIPTION = 'description'
 const TIMESTAMP = 'timestamp'
@@ -36,7 +37,22 @@ function createPayload(): Record<string, unknown> {
     return JSON.parse(readFileSync(rawData, 'utf-8'))
   }
 
-  const webhookPayloadMap = parseMapFromParameters(TOP_LEVEL_WEBHOOK_KEYS)
+  let webhookPayloadMap: Map<string, unknown>
+
+  // If raw-content is provided, use it in place of content
+  const rawContentPath = core.getInput(RAW_CONTENT)
+  if (rawContentPath.length > 0) {
+    if (core.getInput(CONTENT).length > 0) {
+      throw new Error("content and raw-content can't be used at the same time.")
+    }
+    webhookPayloadMap = parseMapFromParameters([
+      RAW_CONTENT,
+      USERNAME,
+      AVATAR_URL
+    ])
+  } else {
+    webhookPayloadMap = parseMapFromParameters(TOP_LEVEL_WEBHOOK_KEYS)
+  }
   const embedPayloadMap = createEmbedObject()
   if (embedPayloadMap.size > 0) {
     webhookPayloadMap.set('embeds', [Object.fromEntries(embedPayloadMap)])
@@ -91,12 +107,23 @@ function parseMapFromParameters(
   const parameterMap = new Map<string, unknown>()
   core.info(`inputObjectKey: ${inputObjectKey}`)
 
-  for (const parameter of parameters) {
+  for (let parameter of parameters) {
     const inputKey =
       inputObjectKey !== '' ? `${inputObjectKey}-${parameter}` : parameter
     let value = core.getInput(inputKey)
     if (value === '') {
       continue
+    }
+
+    if (parameter === RAW_CONTENT) {
+      const rawContentPath = core.getInput(RAW_CONTENT)
+
+      if (rawContentPath.length > 0) {
+        parameter = 'content'
+        value = readFileSync(rawContentPath, 'utf-8')
+      } else {
+        throw new Error(`${rawContentPath} is empty.`)
+      }
     }
 
     if (parameter === TIMESTAMP) {
