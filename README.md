@@ -28,6 +28,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 | avatar-url            | `false`  | URL for the avatar that should appear with the message                                                                                            |
 | tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |
 | raw-data              | `false`  | Filename of raw JSON body to send. **If this is provided, all other inputs (except `webhook-url`) are ignored**                                   |
+| raw-content           | `false`  | Filename of raw message content to send                                                                                                           |
 | filename              | `false`  | Filename of file to upload. **This input is overridden by `raw-data`. If this is provided, `username` and `avatar-url` are still honored**        |
 | embed-title           | `false`  | Title for embed                                                                                                                                   |
 | embed-url             | `false`  | URL for embed                                                                                                                                     |
