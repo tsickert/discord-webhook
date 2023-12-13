@@ -89,3 +89,11 @@ jobs:
           content: Threaded message
           avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
           thread-id:  ${{ secrets.TEST_THREAD_ID }}
+      - name: Discord Webhook Action Confirm Message Sent
+        uses: ./
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          username: Bill
+          content: Discord will confirm this was sent successfully before replying.
+          avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
+          wait: true
