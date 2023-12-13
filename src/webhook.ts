@@ -19,6 +19,8 @@ const ICON_URL = 'icon-url'
 const TEXT = 'text'
 const FILENAME = 'filename'
 const THREAD_ID = 'thread-id'
+const THREAD_NAME = 'thread-name'
+const FLAGS = 'flags'
 
 const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL]
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, URL]
@@ -134,20 +136,35 @@ export async function executeWebhook(): Promise<void> {
   let webhookUrl = core.getInput(WEBHOOK_URL)
   const filename = core.getInput(FILENAME)
   const threadId = core.getInput(THREAD_ID)
+  const threadName = core.getInput(THREAD_NAME)
+  const flags = core.getInput(FLAGS)
   const payload = createPayload()
 
   if (threadId !== '') {
     webhookUrl = `${webhookUrl}?thread_id=${threadId}`
   }
 
-  if (filename !== '') {
+  if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
-    formData.append('upload-file', createReadStream(filename))
-    formData.append('payload_json', JSON.stringify(payload))
+    if (filename !== '') {
+      formData.append('upload-file', createReadStream(filename))
+      formData.append('payload_json', JSON.stringify(payload))
+    }
+    if (threadName !== '') {
+      formData.append('thread_name', threadName)
+    }
+    if (flags !== '') {
+      formData.append('flags', Number(flags))
+    }
     formData.submit(webhookUrl, function (error, response) {
       if (error != null) {
-        core.error(`failed to upload file: ${error.message}`)
-      } else {
+        if (filename !== '') {
+          core.error(`failed to upload file: ${error.message}`)
+        }
+        if (threadName !== '') {
+          core.error(`failed to create thread: ${threadName}`)
+        }
+      } else if (filename !== '') {
         core.info(
           `successfully uploaded file with status code: ${response.statusCode}`
         )
