@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
-import {ReadStream, createReadStream, readFileSync} from 'fs'
-import FormData from 'form-data'
+import axios from 'axios'
+import blob from 'node:stream/consumers'
+import {createReadStream, readFileSync} from 'fs'
 import {HttpClient} from '@actions/http-client'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
-import http from 'http'
 
 const WEBHOOK_URL = 'webhook-url'
 const CONTENT = 'content'
@@ -147,48 +147,64 @@ export async function executeWebhook(): Promise<void> {
 
   if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
-    let fileStream: ReadStream | null = null
     if (filename !== '') {
-      fileStream = createReadStream(filename)
-      formData.append('upload-file', fileStream)
+      formData.append(
+        'upload-file',
+        await blob(createReadStream(filename))
+      )
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {
       formData.append('thread_name', threadName)
     }
     if (flags !== '') {
-      formData.append('flags', Number(flags))
+      formData.append('flags', flags)
     }
 
-    const request = http.request({
+    const response = await axios({
       method: 'POST',
-      headers: formData.getHeaders()
+      url: webhookUrl,
+      data: formData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
     })
 
-    formData.pipe(request)
+    if (response.status !== 200) {
+      if (filename !== '') {
+        core.error(`failed to upload file: ${response.statusText}`)
+      }
+      if (threadName !== '') {
+        core.error(`failed to create thread: ${threadName}`)
+      }
+    } else if (filename !== '') {
+      core.info(
+        `successfully uploaded file with status code: ${response.status}`
+      )
+    }
 
-    request
-      .on('response', response => {
-        if (response.statusCode !== 200) {
-          if (filename !== '') {
-            core.error(`failed to upload file: ${response.statusMessage}`)
-          }
-          if (threadName !== '') {
-            core.error(`failed to create thread: ${threadName}`)
-          }
-        } else if (filename !== '') {
-          core.info(
-            `successfully uploaded file with status code: ${response.statusCode}`
-          )
-        }
-        if (fileStream != null) {
-          fileStream.destroy()
-        }
-        response.destroy()
-      })
-      .on('error', err => {
-        core.error(err.message)
-      })
+    // request
+    //   .on('response', response => {
+    //     if (response.statusCode !== 200) {
+    //       if (filename !== '') {
+    //         core.error(`failed to upload file: ${response.statusMessage}`)
+    //       }
+    //       if (threadName !== '') {
+    //         core.error(`failed to create thread: ${threadName}`)
+    //       }
+    //     } else if (filename !== '') {
+    //       core.info(
+    //         `successfully uploaded file with status code: ${response.statusCode}`
+    //       )
+    //     }
+    //     if (fileStream != null) {
+    //       fileStream.destroy()
+    //     }
+    //     response.destroy()
+    //   })
+    //   .on('error', err => {
+    //     core.error(err.message)
+    //   })
   } else {
     const response = await client.postJson(webhookUrl, payload)
     await handleResponse(response)
