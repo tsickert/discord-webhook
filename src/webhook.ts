@@ -3,6 +3,7 @@ import {createReadStream, readFileSync} from 'fs'
 import FormData from 'form-data'
 import {HttpClient} from '@actions/http-client'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
+import http from 'http'
 
 const WEBHOOK_URL = 'webhook-url'
 const CONTENT = 'content'
@@ -156,20 +157,23 @@ export async function executeWebhook(): Promise<void> {
     if (flags !== '') {
       formData.append('flags', Number(flags))
     }
-    formData.submit(webhookUrl, function (error, response) {
-      if (error != null) {
-        if (filename !== '') {
-          core.error(`failed to upload file: ${error.message}`)
+    formData.submit(
+      webhookUrl,
+      function (error: Error | null, response: http.IncomingMessage) {
+        if (error != null) {
+          if (filename !== '') {
+            core.error(`failed to upload file: ${error.message}`)
+          }
+          if (threadName !== '') {
+            core.error(`failed to create thread: ${threadName}`)
+          }
+        } else if (filename !== '') {
+          core.info(
+            `successfully uploaded file with status code: ${response.statusCode}`
+          )
         }
-        if (threadName !== '') {
-          core.error(`failed to create thread: ${threadName}`)
-        }
-      } else if (filename !== '') {
-        core.info(
-          `successfully uploaded file with status code: ${response.statusCode}`
-        )
       }
-    })
+    )
   } else {
     try {
       const response = await client.postJson(webhookUrl, payload)
@@ -189,4 +193,4 @@ async function run(): Promise<void> {
   }
 }
 
-run()
+await run()
