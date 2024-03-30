@@ -4,6 +4,7 @@
   "private": true,
   "description": "Send discord webhooks via GitHub Actions!",
   "main": "lib/webhook.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write src/**/*.ts",
