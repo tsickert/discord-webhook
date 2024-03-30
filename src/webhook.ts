@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {createReadStream, readFileSync} from 'fs'
+import {ReadStream, createReadStream, readFileSync} from 'fs'
 import FormData from 'form-data'
 import {HttpClient} from '@actions/http-client'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
@@ -147,8 +147,10 @@ export async function executeWebhook(): Promise<void> {
 
   if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
+    let fileStream: ReadStream | null = null
     if (filename !== '') {
-      formData.append('upload-file', createReadStream(filename))
+      fileStream = createReadStream(filename)
+      formData.append('upload-file', fileStream)
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {
@@ -165,20 +167,27 @@ export async function executeWebhook(): Promise<void> {
 
     formData.pipe(request)
 
-    request.on('response', response => {
-      if (response.statusCode !== 200) {
-        if (filename !== '') {
-          core.error(`failed to upload file: ${response.statusMessage}`)
+    request
+      .on('response', response => {
+        if (response.statusCode !== 200) {
+          if (filename !== '') {
+            core.error(`failed to upload file: ${response.statusMessage}`)
+          }
+          if (threadName !== '') {
+            core.error(`failed to create thread: ${threadName}`)
+          }
+        } else if (filename !== '') {
+          core.info(
+            `successfully uploaded file with status code: ${response.statusCode}`
+          )
         }
-        if (threadName !== '') {
-          core.error(`failed to create thread: ${threadName}`)
+        if (fileStream != null) {
+          fileStream.destroy()
         }
-      } else if (filename !== '') {
-        core.info(
-          `successfully uploaded file with status code: ${response.statusCode}`
-        )
-      }
-    })
+      })
+      .on('error', err => {
+        core.error(err.message)
+      })
   } else {
     const response = await client.postJson(webhookUrl, payload)
     await handleResponse(response)
