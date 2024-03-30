@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
-import axios from 'axios'
-import blob from 'node:stream/consumers'
 import {createReadStream, readFileSync} from 'fs'
 import {HttpClient} from '@actions/http-client'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
+import {blob} from 'node:stream/consumers'
+import axios from 'axios'
 
 const WEBHOOK_URL = 'webhook-url'
 const CONTENT = 'content'
@@ -148,10 +148,7 @@ export async function executeWebhook(): Promise<void> {
   if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
     if (filename !== '') {
-      formData.append(
-        'upload-file',
-        await blob(createReadStream(filename))
-      )
+      formData.append('upload-file', await blob(createReadStream(filename)))
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {
