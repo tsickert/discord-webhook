@@ -171,8 +171,12 @@ export async function executeWebhook(): Promise<void> {
       }
     })
   } else {
-    const response = await client.postJson(webhookUrl, payload)
-    await handleResponse(response)
+    try {
+      const response = await client.postJson(webhookUrl, payload)
+      await handleResponse(response)
+    } catch (e) {
+      core.error(`Error occurred while executing webhook: ${e}`)
+    }
   }
 }
 
