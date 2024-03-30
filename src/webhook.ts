@@ -1,9 +1,9 @@
 import * as core from '@actions/core'
 import {createReadStream, readFileSync} from 'fs'
+import axios from 'axios'
 import {HttpClient} from '@actions/http-client'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
 import {blob} from 'node:stream/consumers'
-import axios from 'axios'
 
 const WEBHOOK_URL = 'webhook-url'
 const CONTENT = 'content'
@@ -179,29 +179,6 @@ export async function executeWebhook(): Promise<void> {
         `successfully uploaded file with status code: ${response.status}`
       )
     }
-
-    // request
-    //   .on('response', response => {
-    //     if (response.statusCode !== 200) {
-    //       if (filename !== '') {
-    //         core.error(`failed to upload file: ${response.statusMessage}`)
-    //       }
-    //       if (threadName !== '') {
-    //         core.error(`failed to create thread: ${threadName}`)
-    //       }
-    //     } else if (filename !== '') {
-    //       core.info(
-    //         `successfully uploaded file with status code: ${response.statusCode}`
-    //       )
-    //     }
-    //     if (fileStream != null) {
-    //       fileStream.destroy()
-    //     }
-    //     response.destroy()
-    //   })
-    //   .on('error', err => {
-    //     core.error(err.message)
-    //   })
   } else {
     const response = await client.postJson(webhookUrl, payload)
     await handleResponse(response)
