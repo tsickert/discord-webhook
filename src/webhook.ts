@@ -157,23 +157,28 @@ export async function executeWebhook(): Promise<void> {
     if (flags !== '') {
       formData.append('flags', Number(flags))
     }
-    formData.submit(
-      webhookUrl,
-      function (error: Error | null, response: http.IncomingMessage) {
-        if (error != null) {
-          if (filename !== '') {
-            core.error(`failed to upload file: ${error.message}`)
-          }
-          if (threadName !== '') {
-            core.error(`failed to create thread: ${threadName}`)
-          }
-        } else if (filename !== '') {
-          core.info(
-            `successfully uploaded file with status code: ${response.statusCode}`
-          )
+
+    const request = http.request({
+      method: 'POST',
+      headers: formData.getHeaders()
+    })
+
+    formData.pipe(request)
+
+    request.on('response', response => {
+      if (response.statusCode !== 200) {
+        if (filename !== '') {
+          core.error(`failed to upload file: ${response.statusMessage}`)
         }
+        if (threadName !== '') {
+          core.error(`failed to create thread: ${threadName}`)
+        }
+      } else if (filename !== '') {
+        core.info(
+          `successfully uploaded file with status code: ${response.statusCode}`
+        )
       }
-    )
+    })
   } else {
     const response = await client.postJson(webhookUrl, payload)
     await handleResponse(response)
@@ -189,4 +194,4 @@ async function run(): Promise<void> {
   }
 }
 
-await run()
+run()
