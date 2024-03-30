@@ -184,6 +184,7 @@ export async function executeWebhook(): Promise<void> {
         if (fileStream != null) {
           fileStream.destroy()
         }
+        response.destroy()
       })
       .on('error', err => {
         core.error(err.message)
