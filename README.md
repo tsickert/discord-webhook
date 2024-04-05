@@ -26,6 +26,7 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 | thread-id             | `false`  | ID of the thread you want the webhook to send the message into (will automatically unarchive threads)                                             |
 | thread-name           | `false`  | Name of the thread you want the webhook to create                                                                                                 |
 | flags                 | `false`  | Message flags                                                                                                                                     |
+| wait                  | `false`  | Whether Discord should confirm the message was successfully sent before responding to the request (boolean)                                       |
 | username              | `false`  | The username that should appear to send the message. Note: username will have the "bot" badge next to their name                                  |
 | avatar-url            | `false`  | URL for the avatar that should appear with the message                                                                                            |
 | tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |

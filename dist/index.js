@@ -11065,15 +11065,23 @@ async function handleResponse(response) {
         core.error(JSON.stringify(response));
     }
 }
-async function executeWebhook(webhookUrl, threadId, filename, threadName, flags, payload) {
+async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags, wait, payload) {
     if (threadId !== '') {
         webhookUrl = `${webhookUrl}?thread_id=${threadId}`;
     }
-    if (filename !== '' || threadName !== '' || flags !== '') {
+    if (wait) {
+        if (webhookUrl.includes('?')) {
+            webhookUrl = `${webhookUrl}&wait=true`;
+        }
+        else {
+            webhookUrl = `${webhookUrl}?wait=true`;
+        }
+    }
+    if (filePath !== '' || threadName !== '' || flags !== '') {
         const formData = new FormData();
-        if (filename !== '') {
-            const actualFilename = external_node_path_default().basename(filename);
-            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filename)), actualFilename);
+        if (filePath !== '') {
+            const fileName = external_node_path_default().basename(filePath);
+            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filePath)), fileName);
             formData.append('payload_json', JSON.stringify(payload));
         }
         if (threadName !== '') {
@@ -11091,14 +11099,14 @@ async function executeWebhook(webhookUrl, threadId, filename, threadName, flags,
             }
         });
         if (response.status !== 200) {
-            if (filename !== '') {
+            if (filePath !== '') {
                 core.error(`failed to upload file: ${response.statusText}`);
             }
             if (threadName !== '') {
                 core.error(`failed to create thread: ${threadName}`);
             }
         }
-        else if (filename !== '') {
+        else if (filePath !== '') {
             core.info(`successfully uploaded file with status code: ${response.status}`);
         }
     }
@@ -11129,6 +11137,7 @@ const FILENAME = 'filename';
 const THREAD_ID = 'thread-id';
 const THREAD_NAME = 'thread-name';
 const FLAGS = 'flags';
+const WAIT = 'wait';
 const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL];
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, action_URL];
 const EMBED_AUTHOR_KEYS = [NAME, action_URL, ICON_URL];
@@ -11204,10 +11213,11 @@ async function run() {
     const threadId = core.getInput(THREAD_ID);
     const threadName = core.getInput(THREAD_NAME);
     const flags = core.getInput(FLAGS);
+    const wait = core.getBooleanInput(WAIT);
     const payload = createPayload();
     try {
         core.info('Running discord webhook action...');
-        await executeWebhook(webhookUrl, threadId, filename, threadName, flags, payload);
+        await executeWebhook(webhookUrl, threadId, filename, threadName, flags, wait, payload);
     }
     catch (error) {
         if (error instanceof Error)

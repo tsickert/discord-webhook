@@ -20,6 +20,9 @@ inputs:
   flags:
     description: 'Message flags'
     required: false
+  wait:
+    description: 'Whether Discord should wait for confirmation of message send before responding to the webhook request'
+    required: false
   username:
     description: 'The username that should appear to send the message. Note: username will have the "bot" badge next to their name.'
     required: false

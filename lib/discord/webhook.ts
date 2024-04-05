@@ -23,20 +23,29 @@ async function handleResponse(response: TypedResponse<unknown>): Promise<void> {
 export async function executeWebhook(
   webhookUrl: string,
   threadId: string,
-  filename: string,
+  filePath: string,
   threadName: string,
   flags: string,
+  wait: boolean,
   payload: unknown): Promise<void>{
 
   if (threadId !== '') {
     webhookUrl = `${webhookUrl}?thread_id=${threadId}`
   }
 
-  if (filename !== '' || threadName !== '' || flags !== '') {
+  if (wait) {
+    if (webhookUrl.includes('?')) {
+      webhookUrl = `${webhookUrl}&wait=true`
+    } else {
+      webhookUrl = `${webhookUrl}?wait=true`
+    }
+  }
+
+  if (filePath !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
-    if (filename !== '') {
-      const actualFilename = path.basename(filename);
-      formData.append('upload-file', await blob(createReadStream(filename)), actualFilename)
+    if (filePath !== '') {
+      const fileName = path.basename(filePath);
+      formData.append('upload-file', await blob(createReadStream(filePath)), fileName)
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {
@@ -56,13 +65,13 @@ export async function executeWebhook(
     })
 
     if (response.status !== 200) {
-      if (filename !== '') {
+      if (filePath !== '') {
         core.error(`failed to upload file: ${response.statusText}`)
       }
       if (threadName !== '') {
         core.error(`failed to create thread: ${threadName}`)
       }
-    } else if (filename !== '') {
+    } else if (filePath !== '') {
       core.info(
         `successfully uploaded file with status code: ${response.status}`
       )
