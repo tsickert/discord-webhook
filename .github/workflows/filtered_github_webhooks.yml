@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Discord Webhook Action
-      uses: tsickert/discord-webhook@v5.2.0
+      uses: ./
       with:
         webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
         username: GitHub
