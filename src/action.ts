@@ -1,9 +1,6 @@
 import * as core from '@actions/core'
-import {createReadStream, readFileSync} from 'fs'
-import {HttpClient} from '@actions/http-client'
-import {TypedResponse} from '@actions/http-client/lib/interfaces'
-import {blob} from 'node:stream/consumers'
-import axios from 'axios'
+import {executeWebhook} from '../lib/discord/webhook'
+import {readFileSync} from 'fs'
 
 const WEBHOOK_URL = 'webhook-url'
 const CONTENT = 'content'
@@ -120,98 +117,23 @@ function parseMapFromParameters(
   return parameterMap
 }
 
-async function handleResponse(response: TypedResponse<unknown>): Promise<void> {
-  core.info(
-    `Webhook returned ${response.statusCode} with message: ${response.result}. Please see discord documentation at https://discord.com/developers/docs/resources/webhook#execute-webhook for more information`
-  )
-  if (response.statusCode >= 400) {
-    core.error(
-      'Discord Webhook Action failed to execute webhook. Please see logs above for details. Error printed below:'
-    )
-    core.error(JSON.stringify(response))
-  }
-}
-
-export async function executeWebhook(): Promise<void> {
-  const client = new HttpClient()
-  let webhookUrl = core.getInput(WEBHOOK_URL)
+async function run(): Promise<void> {
+  const webhookUrl = core.getInput(WEBHOOK_URL)
   const filename = core.getInput(FILENAME)
   const threadId = core.getInput(THREAD_ID)
   const threadName = core.getInput(THREAD_NAME)
   const flags = core.getInput(FLAGS)
   const payload = createPayload()
-
-  if (threadId !== '') {
-    webhookUrl = `${webhookUrl}?thread_id=${threadId}`
-  }
-
-  if (filename !== '' || threadName !== '' || flags !== '') {
-    const formData = new FormData()
-    if (filename !== '') {
-      formData.append('upload-file', await blob(createReadStream(filename)))
-      formData.append('payload_json', JSON.stringify(payload))
-    }
-    if (threadName !== '') {
-      formData.append('thread_name', threadName)
-    }
-    if (flags !== '') {
-      formData.append('flags', flags)
-    }
-
-    const response = await axios({
-      method: 'POST',
-      url: webhookUrl,
-      data: formData,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
-
-    if (response.status !== 200) {
-      if (filename !== '') {
-        core.error(`failed to upload file: ${response.statusText}`)
-      }
-      if (threadName !== '') {
-        core.error(`failed to create thread: ${threadName}`)
-      }
-    } else if (filename !== '') {
-      core.info(
-        `successfully uploaded file with status code: ${response.status}`
-      )
-    }
-
-    // request
-    //   .on('response', response => {
-    //     if (response.statusCode !== 200) {
-    //       if (filename !== '') {
-    //         core.error(`failed to upload file: ${response.statusMessage}`)
-    //       }
-    //       if (threadName !== '') {
-    //         core.error(`failed to create thread: ${threadName}`)
-    //       }
-    //     } else if (filename !== '') {
-    //       core.info(
-    //         `successfully uploaded file with status code: ${response.statusCode}`
-    //       )
-    //     }
-    //     if (fileStream != null) {
-    //       fileStream.destroy()
-    //     }
-    //     response.destroy()
-    //   })
-    //   .on('error', err => {
-    //     core.error(err.message)
-    //   })
-  } else {
-    const response = await client.postJson(webhookUrl, payload)
-    await handleResponse(response)
-  }
-}
-
-async function run(): Promise<void> {
   try {
     core.info('Running discord webhook action...')
-    await executeWebhook()
+    await executeWebhook(
+      webhookUrl,
+      threadId,
+      filename,
+      threadName,
+      flags,
+      payload
+    )
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }
