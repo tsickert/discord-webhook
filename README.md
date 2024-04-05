@@ -236,4 +236,3 @@ please open an issue in this repository and I'll take a look!
 
 The Discord API supports up to 10 embeds per webhook and also offers additional `fields` in the embed. Due to the input format for actions, I decided to limit it to one embed and I decided not to support fields. (`fields` seem to be bold text above non-bold text, so they seem reproducable without the explicit field). If you need to have multiple embeds, I would suggest invoking the action multiple times. If requested, I can explore providing the additional embeds and fields, but based on feedback I was getting during dev, the fields provided currently suited most needs. 
 
-The action also doesn't support threads. Support coming soon. 
