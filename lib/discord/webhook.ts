@@ -4,6 +4,7 @@ import axios from 'axios'
 import * as core from '@actions/core'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
 import {HttpClient} from '@actions/http-client'
+import path from 'node:path'
 
 const client = new HttpClient()
 
@@ -34,7 +35,8 @@ export async function executeWebhook(
   if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
     if (filename !== '') {
-      formData.append('upload-file', await blob(createReadStream(filename)), filename)
+      const actualFilename = path.basename(filename);
+      formData.append('upload-file', await blob(createReadStream(filename)), actualFilename)
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {

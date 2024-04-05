@@ -6320,6 +6320,18 @@ module.exports = JSON.parse('{"application/1d-interleaved-parityfec":{"source":"
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__nccwpck_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__nccwpck_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	(() => {
 /******/ 		// define getter functions for harmony exports
@@ -11035,7 +11047,11 @@ axios.default = axios;
 
 // EXTERNAL MODULE: ./node_modules/@actions/http-client/lib/index.js
 var lib = __nccwpck_require__(6255);
+;// CONCATENATED MODULE: external "node:path"
+const external_node_path_namespaceObject = require("node:path");
+var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
 ;// CONCATENATED MODULE: ./build/lib/discord/webhook.js
+
 
 
 
@@ -11056,7 +11072,8 @@ async function executeWebhook(webhookUrl, threadId, filename, threadName, flags,
     if (filename !== '' || threadName !== '' || flags !== '') {
         const formData = new FormData();
         if (filename !== '') {
-            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filename)), filename);
+            const actualFilename = external_node_path_default().basename(filename);
+            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filename)), actualFilename);
             formData.append('payload_json', JSON.stringify(payload));
         }
         if (threadName !== '') {
