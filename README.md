@@ -7,7 +7,8 @@ This action allows users to set up a GitHub Action that calls Discord webhooks w
 Want to know more about Discord Webhooks? Check out the [intro](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and [documentation](https://discord.com/developers/docs/resources/webhook#execute-webhook) from Discord.
 
 ## Recent Updates
-
+- Support for `wait` (v6.0.0)
+- Node 20 upgrade (v6.0.0)
 - Support for Thread ID added (v5.3.0)
 - Add Description Character limit truncation (v5.2.0)
 - Support for embed URL (v5.1.0)
