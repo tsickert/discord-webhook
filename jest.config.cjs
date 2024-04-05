@@ -6,7 +6,7 @@ module.exports = {
     '^.+\\.ts$': 'ts-jest'
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(axios)/)' // add this line
+    'node_modules/(?!(axios)/)'
   ],
   verbose: true
 }
