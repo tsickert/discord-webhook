@@ -34,7 +34,7 @@ export async function executeWebhook(
   if (filename !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
     if (filename !== '') {
-      formData.append('upload-file', await blob(createReadStream(filename)))
+      formData.append('upload-file', await blob(createReadStream(filename)), filename)
       formData.append('payload_json', JSON.stringify(payload))
     }
     if (threadName !== '') {

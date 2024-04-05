@@ -11056,7 +11056,7 @@ async function executeWebhook(webhookUrl, threadId, filename, threadName, flags,
     if (filename !== '' || threadName !== '' || flags !== '') {
         const formData = new FormData();
         if (filename !== '') {
-            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filename)));
+            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filename)), filename);
             formData.append('payload_json', JSON.stringify(payload));
         }
         if (threadName !== '') {
