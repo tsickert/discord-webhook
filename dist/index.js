@@ -12764,14 +12764,8 @@ async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags,
             const file = (0,external_fs_.readFileSync)(filePath);
             const fileName = external_node_path_default().basename(filePath);
             const encoding = chardet_lib_default().detect(file);
-            if (encoding === 'UTF-8') {
-                const fileContent = (0,external_fs_.createReadStream)(filePath, { encoding: 'utf-8' });
-                formData.append('upload-file', await (0,consumers_namespaceObject.blob)(fileContent), fileName);
-            }
-            else {
-                const fileStream = (0,external_fs_.createReadStream)(filePath);
-                formData.append('upload-file', await (0,consumers_namespaceObject.blob)(fileStream), fileName);
-            }
+            const fileContent = (0,external_fs_.createReadStream)(filePath, { encoding: 'utf-8' });
+            formData.append('upload-file', await (0,consumers_namespaceObject.blob)(fileContent), fileName);
             formData.append('payload_json', JSON.stringify(payload));
         }
         if (threadName !== '') {

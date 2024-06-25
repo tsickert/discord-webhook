@@ -49,13 +49,8 @@ export async function executeWebhook(
       const fileName = path.basename(filePath);
       const encoding = chardet.detect(file);
     
-      if (encoding === 'UTF-8') {
         const fileContent = createReadStream(filePath, { encoding: 'utf-8'});
         formData.append('upload-file', await blob(fileContent), fileName);
-      } else {
-        const fileStream = createReadStream(filePath);
-        formData.append('upload-file', await blob(fileStream), fileName);
-      }
       formData.append('payload_json', JSON.stringify(payload));
     }
     if (threadName !== '') {
