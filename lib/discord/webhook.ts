@@ -1,10 +1,11 @@
 import {blob} from 'node:stream/consumers'
-import {createReadStream} from 'fs'
+import {createReadStream, readFileSync} from 'fs'
 import axios from 'axios'
 import * as core from '@actions/core'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
 import {HttpClient} from '@actions/http-client'
 import path from 'node:path'
+import chardet from 'chardet';
 
 const client = new HttpClient()
 
@@ -44,9 +45,18 @@ export async function executeWebhook(
   if (filePath !== '' || threadName !== '' || flags !== '') {
     const formData = new FormData()
     if (filePath !== '') {
+      const file = readFileSync(filePath)
       const fileName = path.basename(filePath);
-      formData.append('upload-file', await blob(createReadStream(filePath)), fileName)
-      formData.append('payload_json', JSON.stringify(payload))
+      const encoding = chardet.detect(file);
+    
+      if (encoding === 'UTF-8') {
+        const fileContent = createReadStream(filePath, { encoding: 'utf-8'});
+        formData.append('upload-file', await blob(fileContent), fileName);
+      } else {
+        const fileStream = createReadStream(filePath);
+        formData.append('upload-file', await blob(fileStream), fileName);
+      }
+      formData.append('payload_json', JSON.stringify(payload));
     }
     if (threadName !== '') {
       formData.append('thread_name', threadName)
