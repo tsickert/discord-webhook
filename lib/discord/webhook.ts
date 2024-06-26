@@ -47,16 +47,13 @@ export async function executeWebhook(
     const formData = new FormData()
     if (filePath !== '') {
       const file = readFileSync(filePath)
-      const fileBuffer = Buffer.from(file);
       const fileName = path.basename(filePath);
-      const encoding = chardet.detect(fileBuffer);
-      if (encoding === 'UTF-8') {
-        // Discord has issues with detecting specific utf8 files, so explicitly add the BOM
-        formData.append('upload-file', new Blob([0xFEFF, fileBuffer]), fileName);
-      }
-      else {
-        formData.append('upload-file', new Blob([fileBuffer]), fileName);
-      }
+      const fileBuffer = Buffer.from(file);
+      const utf8Bom = Buffer.from([0xEF, 0xBB, 0xBF]);
+      const fileEncoding = chardet.detect(fileBuffer);
+      // Discord has issues with detecting specific utf8 files, so explicitly add the BOM
+      const blobContent = (fileEncoding === 'UTF-8') ? new Blob([utf8Bom, fileBuffer]) : new Blob([fileBuffer]);
+      formData.append('upload-file', blobContent, fileName);
       formData.append('payload_json', JSON.stringify(payload));
     }
     if (threadName !== '') {

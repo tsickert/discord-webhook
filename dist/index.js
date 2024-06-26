@@ -8060,8 +8060,6 @@ __nccwpck_require__.d(common_utils_namespaceObject, {
 
 // EXTERNAL MODULE: ./node_modules/@actions/core/lib/core.js
 var core = __nccwpck_require__(2186);
-;// CONCATENATED MODULE: external "node:stream/consumers"
-const consumers_namespaceObject = require("node:stream/consumers");
 // EXTERNAL MODULE: external "fs"
 var external_fs_ = __nccwpck_require__(7147);
 ;// CONCATENATED MODULE: ./node_modules/axios/lib/helpers/bind.js
@@ -12730,6 +12728,8 @@ var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_nod
 // EXTERNAL MODULE: ./node_modules/chardet/lib/index.js
 var chardet_lib = __nccwpck_require__(328);
 var chardet_lib_default = /*#__PURE__*/__nccwpck_require__.n(chardet_lib);
+;// CONCATENATED MODULE: external "node:buffer"
+const external_node_buffer_namespaceObject = require("node:buffer");
 ;// CONCATENATED MODULE: ./build/lib/discord/webhook.js
 
 
@@ -12762,10 +12762,13 @@ async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags,
         const formData = new FormData();
         if (filePath !== '') {
             const file = (0,external_fs_.readFileSync)(filePath);
+            const fileBuffer = external_node_buffer_namespaceObject.Buffer.from(file);
             const fileName = external_node_path_default().basename(filePath);
-            const encoding = chardet_lib_default().detect(file);
-            const fileContent = (0,external_fs_.createReadStream)(filePath, { encoding: 'utf-8' });
-            formData.append('upload-file', await (0,consumers_namespaceObject.blob)(fileContent), fileName);
+            const encoding = chardet_lib_default().detect(fileBuffer);
+            const utf8Bom = external_node_buffer_namespaceObject.Buffer.from([0xEF, 0xBB, 0xBF]);
+            // Discord has issues with detecting specific utf8 files, so explicitly add the BOM
+            const blobContent = (encoding === 'UTF-8') ? new Blob([utf8Bom, fileBuffer]) : new Blob([fileBuffer]);
+            formData.append('upload-file', blobContent, fileName);
             formData.append('payload_json', JSON.stringify(payload));
         }
         if (threadName !== '') {
