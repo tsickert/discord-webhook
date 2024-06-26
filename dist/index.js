@@ -12727,7 +12727,6 @@ const external_node_path_namespaceObject = require("node:path");
 var external_node_path_default = /*#__PURE__*/__nccwpck_require__.n(external_node_path_namespaceObject);
 // EXTERNAL MODULE: ./node_modules/chardet/lib/index.js
 var chardet_lib = __nccwpck_require__(328);
-var chardet_lib_default = /*#__PURE__*/__nccwpck_require__.n(chardet_lib);
 ;// CONCATENATED MODULE: external "node:buffer"
 const external_node_buffer_namespaceObject = require("node:buffer");
 ;// CONCATENATED MODULE: ./build/lib/discord/webhook.js
@@ -12762,12 +12761,12 @@ async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags,
         const formData = new FormData();
         if (filePath !== '') {
             const file = (0,external_fs_.readFileSync)(filePath);
-            const fileBuffer = external_node_buffer_namespaceObject.Buffer.from(file);
             const fileName = external_node_path_default().basename(filePath);
-            const encoding = chardet_lib_default().detect(fileBuffer);
+            const fileBuffer = external_node_buffer_namespaceObject.Buffer.from(file);
             const utf8Bom = external_node_buffer_namespaceObject.Buffer.from([0xEF, 0xBB, 0xBF]);
+            const fileEncoding = (0,chardet_lib.detect)(fileBuffer);
             // Discord has issues with detecting specific utf8 files, so explicitly add the BOM
-            const blobContent = (encoding === 'UTF-8') ? new Blob([utf8Bom, fileBuffer]) : new Blob([fileBuffer]);
+            const blobContent = (fileEncoding === 'UTF-8') ? new Blob([utf8Bom, fileBuffer]) : new Blob([fileBuffer]);
             formData.append('upload-file', blobContent, fileName);
             formData.append('payload_json', JSON.stringify(payload));
         }

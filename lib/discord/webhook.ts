@@ -1,12 +1,11 @@
-import {blob} from 'node:stream/consumers'
-import {createReadStream, readFileSync} from 'fs'
+import {readFileSync} from 'fs'
 import axios from 'axios'
 import * as core from '@actions/core'
 import {TypedResponse} from '@actions/http-client/lib/interfaces'
 import {HttpClient} from '@actions/http-client'
 import path from 'node:path'
-import chardet from 'chardet';
-import { Buffer } from 'node:buffer'
+import {detect as detectCharset} from 'chardet';
+import {Buffer} from 'node:buffer'
 
 const client = new HttpClient()
 
@@ -50,7 +49,7 @@ export async function executeWebhook(
       const fileName = path.basename(filePath);
       const fileBuffer = Buffer.from(file);
       const utf8Bom = Buffer.from([0xEF, 0xBB, 0xBF]);
-      const fileEncoding = chardet.detect(fileBuffer);
+      const fileEncoding = detectCharset(fileBuffer);
       // Discord has issues with detecting specific utf8 files, so explicitly add the BOM
       const blobContent = (fileEncoding === 'UTF-8') ? new Blob([utf8Bom, fileBuffer]) : new Blob([fileBuffer]);
       formData.append('upload-file', blobContent, fileName);
