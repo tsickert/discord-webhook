@@ -1,13 +1,14 @@
 # Discord Webhook Action
 
-[![Runs on All Action Runners](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml/badge.svg)](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml)
+[![Runs on All Action Runners](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml/badge.svg?branch=master)](https://github.com/tsickert/discord-webhook/actions/workflows/os-test.yml)
 
 This action allows users to set up a GitHub Action that calls Discord webhooks with content message and, optionally, a custom username and avatar url.
 
 Want to know more about Discord Webhooks? Check out the [intro](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) and [documentation](https://discord.com/developers/docs/resources/webhook#execute-webhook) from Discord.
 
 ## Recent Updates
-
+- Support for `wait` (v6.0.0)
+- Node 20 upgrade (v6.0.0)
 - Support for Thread ID added (v5.3.0)
 - Add Description Character limit truncation (v5.2.0)
 - Support for embed URL (v5.1.0)
@@ -24,6 +25,9 @@ Want to know more about Discord Webhooks? Check out the [intro](https://support.
 | webhook-url           | `true`   | Webhook URL from discord. See: the [intro to webhook docs](https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks) for details |
 | content               | `false`  | Message that is sent via the webhook                                                                                                              |
 | thread-id             | `false`  | ID of the thread you want the webhook to send the message into (will automatically unarchive threads)                                             |
+| thread-name           | `false`  | Name of the thread you want the webhook to create                                                                                                 |
+| flags                 | `false`  | Message flags                                                                                                                                     |
+| wait                  | `false`  | Whether Discord should confirm the message was successfully sent before responding to the request (boolean)                                       |
 | username              | `false`  | The username that should appear to send the message. Note: username will have the "bot" badge next to their name                                  |
 | avatar-url            | `false`  | URL for the avatar that should appear with the message                                                                                            |
 | tts                   | `false`  | Whether the message is text-to-speech                                                                                                             |
@@ -207,6 +211,19 @@ jobs:
 
 Yes! Plaintext discord messages use the following syntax for `@`s: `<@{user-id}>` for users (example: `<@123456790>`) and `<#{channel-id}>` for channels  (example: `<#123456790>`). The easiest way to find your user ID or channel ID is to enable developer mode and then right click on a user or channel and select `Copy ID`. To enable developer mode, go to `settings(cog wheel)` -> `Advanced (under App Settings header)` -> `Developer Mode`.
 
+#### How can I include multiline texts?
+
+You can achieve that using YAML's [block scalar literal style](https://yaml.org/spec/1.2.2/#literal-style), using a pipe `|` to tell YAML to keep the newlines in your text.
+
+For example, this is how you can write a multiline `embed-description`:
+
+```yaml
+  embed-description: |
+    As we used the pipe,
+    YAML will keep the newlines on our text.
+    Awesome!
+```
+
 #### Help, something is wrong, my webhook isn't sending!
 
 Sorry to hear that! The discord webhook API is complicated and has a long list of conditions and restrictions.
@@ -220,4 +237,3 @@ please open an issue in this repository and I'll take a look!
 
 The Discord API supports up to 10 embeds per webhook and also offers additional `fields` in the embed. Due to the input format for actions, I decided to limit it to one embed and I decided not to support fields. (`fields` seem to be bold text above non-bold text, so they seem reproducable without the explicit field). If you need to have multiple embeds, I would suggest invoking the action multiple times. If requested, I can explore providing the additional embeds and fields, but based on feedback I was getting during dev, the fields provided currently suited most needs. 
 
-The action also doesn't support threads. Support coming soon. 
