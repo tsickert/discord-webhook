@@ -36,6 +36,9 @@ inputs:
   raw-data:
     description: 'Name of a json file that will be sent as the data for the webhook'
     required: false
+  raw-content:
+    description: 'Name of a text file containing the message to be sent via the webhook'
+    required: false
   filename:
     description: 'Name of a file that will be uploaded via the webhook'
     required: false
