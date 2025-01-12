@@ -11065,7 +11065,7 @@ async function handleResponse(response) {
         core.error(JSON.stringify(response));
     }
 }
-async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags, wait, payload) {
+async function executeWebhook(webhookUrl, threadId, filePath, wait, payload) {
     if (threadId !== '') {
         webhookUrl = `${webhookUrl}?thread_id=${threadId}`;
     }
@@ -11077,19 +11077,11 @@ async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags,
             webhookUrl = `${webhookUrl}?wait=true`;
         }
     }
-    if (filePath !== '' || threadName !== '' || flags !== '') {
+    if (filePath !== '') {
         const formData = new FormData();
-        if (filePath !== '') {
-            const fileName = external_node_path_default().basename(filePath);
-            formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filePath)), fileName);
-            formData.append('payload_json', JSON.stringify(payload));
-        }
-        if (threadName !== '') {
-            formData.append('thread_name', threadName);
-        }
-        if (flags !== '') {
-            formData.append('flags', flags);
-        }
+        const fileName = external_node_path_default().basename(filePath);
+        formData.append('upload-file', await (0,consumers_namespaceObject.blob)((0,external_fs_.createReadStream)(filePath)), fileName);
+        formData.append('payload_json', JSON.stringify(payload));
         const response = await lib_axios({
             method: 'POST',
             url: webhookUrl,
@@ -11101,9 +11093,6 @@ async function executeWebhook(webhookUrl, threadId, filePath, threadName, flags,
         if (response.status !== 200) {
             if (filePath !== '') {
                 core.error(`failed to upload file: ${response.statusText}`);
-            }
-            if (threadName !== '') {
-                core.error(`failed to create thread: ${threadName}`);
             }
         }
         else if (filePath !== '') {
@@ -11138,7 +11127,13 @@ const THREAD_ID = 'thread-id';
 const THREAD_NAME = 'thread-name';
 const FLAGS = 'flags';
 const WAIT = 'wait';
-const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL];
+const TOP_LEVEL_WEBHOOK_KEYS = [
+    CONTENT,
+    USERNAME,
+    AVATAR_URL,
+    FLAGS,
+    THREAD_NAME
+];
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, action_URL];
 const EMBED_AUTHOR_KEYS = [NAME, action_URL, ICON_URL];
 const EMBED_FOOTER_KEYS = [TEXT, ICON_URL];
@@ -11211,13 +11206,11 @@ async function run() {
     const webhookUrl = core.getInput(WEBHOOK_URL);
     const filename = core.getInput(FILENAME);
     const threadId = core.getInput(THREAD_ID);
-    const threadName = core.getInput(THREAD_NAME);
-    const flags = core.getInput(FLAGS);
     const wait = core.getBooleanInput(WAIT);
     const payload = createPayload();
     try {
         core.info('Running discord webhook action...');
-        await executeWebhook(webhookUrl, threadId, filename, threadName, flags, wait, payload);
+        await executeWebhook(webhookUrl, threadId, filename, wait, payload);
     }
     catch (error) {
         if (error instanceof Error)

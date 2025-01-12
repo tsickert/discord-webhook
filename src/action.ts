@@ -21,7 +21,13 @@ const THREAD_NAME = 'thread-name'
 const FLAGS = 'flags'
 const WAIT = 'wait'
 
-const TOP_LEVEL_WEBHOOK_KEYS = [CONTENT, USERNAME, AVATAR_URL]
+const TOP_LEVEL_WEBHOOK_KEYS = [
+  CONTENT,
+  USERNAME,
+  AVATAR_URL,
+  FLAGS,
+  THREAD_NAME
+]
 const EMBED_KEYS = [TITLE, DESCRIPTION, TIMESTAMP, COLOR, URL]
 const EMBED_AUTHOR_KEYS = [NAME, URL, ICON_URL]
 const EMBED_FOOTER_KEYS = [TEXT, ICON_URL]
@@ -122,21 +128,11 @@ async function run(): Promise<void> {
   const webhookUrl = core.getInput(WEBHOOK_URL)
   const filename = core.getInput(FILENAME)
   const threadId = core.getInput(THREAD_ID)
-  const threadName = core.getInput(THREAD_NAME)
-  const flags = core.getInput(FLAGS)
   const wait = core.getBooleanInput(WAIT)
   const payload = createPayload()
   try {
     core.info('Running discord webhook action...')
-    await executeWebhook(
-      webhookUrl,
-      threadId,
-      filename,
-      threadName,
-      flags,
-      wait,
-      payload
-    )
+    await executeWebhook(webhookUrl, threadId, filename, wait, payload)
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message)
   }

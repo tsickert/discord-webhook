@@ -24,10 +24,8 @@ export async function executeWebhook(
   webhookUrl: string,
   threadId: string,
   filePath: string,
-  threadName: string,
-  flags: string,
   wait: boolean,
-  payload: unknown): Promise<void>{
+  payload: unknown): Promise<void> {
 
   if (threadId !== '') {
     webhookUrl = `${webhookUrl}?thread_id=${threadId}`
@@ -41,19 +39,11 @@ export async function executeWebhook(
     }
   }
 
-  if (filePath !== '' || threadName !== '' || flags !== '') {
+  if (filePath !== '') {
     const formData = new FormData()
-    if (filePath !== '') {
-      const fileName = path.basename(filePath);
-      formData.append('upload-file', await blob(createReadStream(filePath)), fileName)
-      formData.append('payload_json', JSON.stringify(payload))
-    }
-    if (threadName !== '') {
-      formData.append('thread_name', threadName)
-    }
-    if (flags !== '') {
-      formData.append('flags', flags)
-    }
+    const fileName = path.basename(filePath);
+    formData.append('upload-file', await blob(createReadStream(filePath)), fileName)
+    formData.append('payload_json', JSON.stringify(payload))
 
     const response = await axios({
       method: 'POST',
@@ -67,9 +57,6 @@ export async function executeWebhook(
     if (response.status !== 200) {
       if (filePath !== '') {
         core.error(`failed to upload file: ${response.statusText}`)
-      }
-      if (threadName !== '') {
-        core.error(`failed to create thread: ${threadName}`)
       }
     } else if (filePath !== '') {
       core.info(

@@ -97,3 +97,9 @@ jobs:
           content: Discord will not confirm this was sent successfully before replying.
           avatar-url: https://cdn.discordapp.com/avatars/742807869023322232/dd41912939ffccbea0276f70688fa0ec.webp?size=256
           wait: false
+      - name: Do not embed
+        uses: ./
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: Don't embed link https://github.com/tsickert/discord-webhook
+          flags: 4
